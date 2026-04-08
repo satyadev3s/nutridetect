@@ -7,4 +7,4 @@ opencv-python
 Pillow
 requests
 tensorflow==2.15.0
-gurnicorn
+gunicorn
