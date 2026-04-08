@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Results - NutriDetect</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .result-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .detail-item {
+            background: rgba(0, 212, 255, 0.05);
+            border-left: 4px solid var(--primary);
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease, background 0.28s ease;
+        }
+
+        .detail-item:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 18px 35px rgba(0, 212, 255, 0.18);
+            background: rgba(0, 212, 255, 0.09);
+        }
+
+        .detail-label {
+            font-size: 0.85rem;
+            color: #808080;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-value {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .risk-banner {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.85rem 1.1rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+            font-weight: 800;
+            color: #f5fbff;
+        }
+
+        .confidence-container {
+            width: 100%;
+            height: 10px;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 999px;
+            overflow: hidden;
+            margin-top: 0.75rem;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .recommendations-box {
+            background: rgba(0, 136, 255, 0.1);
+            border: 1px solid rgba(0, 136, 255, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+        }
+
+        .recommendations-box:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 35px rgba(0, 136, 255, 0.16);
+        }
+
+        .recommendation-item {
+            color: #c0c0c0;
+            margin-bottom: 0.75rem;
+        }
+
+        .guidance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .guidance-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.4rem;
+            transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease, background 0.28s ease;
+        }
+
+        .guidance-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 36px rgba(0, 212, 255, 0.14);
+        }
+
+        .guidance-card.precautions {
+            background: rgba(245, 158, 11, 0.08);
+            border-color: rgba(245, 158, 11, 0.35);
+        }
+
+        .guidance-card.foods {
+            background: rgba(34, 197, 94, 0.08);
+            border-color: rgba(34, 197, 94, 0.35);
+        }
+
+        .guidance-card.doctor {
+            background: rgba(239, 68, 68, 0.08);
+            border-color: rgba(239, 68, 68, 0.35);
+        }
+
+        .guidance-card h3 {
+            color: var(--primary);
+            font-size: 1.05rem;
+            font-weight: 800;
+            margin-bottom: 0.8rem;
+        }
+
+        .guidance-card.precautions h3 {
+            color: #fbbf24;
+        }
+
+        .guidance-card.foods h3 {
+            color: #4ade80;
+        }
+
+        .guidance-card.doctor h3 {
+            color: #ff7b7b;
+        }
+
+        .guidance-card ul {
+            padding-left: 1rem;
+            color: #c8d8e2;
+        }
+
+        .guidance-card li {
+            margin-bottom: 0.6rem;
+        }
+
+        .action-button {
+            padding: 1rem 1.8rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--dark-bg);
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .action-button.secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+    </style>
+</head>
+<body class="no-bg-image">
+    <nav class="navbar">
+        <a href="{{ url_for('main.home') }}" class="navbar-brand">
+            <i class="fas fa-leaf"></i> NutriDetect
+        </a>
+        <ul class="navbar-menu">
+            <li><a href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('main.dashboard') }}#analyze">Analyze</a></li>
+            <li><a href="{{ url_for('main.logout') }}" style="color: var(--primary); font-weight: 600;">Logout</a></li>
+        </ul>
+    </nav>
+
+    <main style="margin-top: 90px; padding: 2rem;">
+        <section style="max-width: 1100px; margin: 0 auto;">
+            <h1 style="font-size: 2.2rem; font-weight: 900; margin-bottom: 2rem; color: var(--primary);">Your Analysis Results</h1>
+
+            <div class="result-card nutri-panel">
+                <div style="display: grid; grid-template-columns: minmax(280px, 360px) 1fr; gap: 2rem; align-items: start;">
+                    <div>
+                        <img src="{{ url_for('static', filename='uploads/' + image) }}" alt="Uploaded image" style="width: 100%; border-radius: 16px; border: 1px solid var(--border-color);">
+                    </div>
+
+                    <div>
+                        <div style="font-size: 2rem; font-weight: 900; color: var(--primary); margin-bottom: 0.5rem;">{{ result }}</div>
+                        <div style="color: #b0b0b0; font-size: 1rem; margin-bottom: 1.5rem;">Nutritional status: {{ nutritional_status }}</div>
+                        <div class="risk-banner">
+                            <span style="font-size: 1.35rem;">{{ risk_emoji }}</span>
+                            <span>Risk Level: {{ risk_level }}</span>
+                        </div>
+                        {% if assessment_basis %}
+                        <div style="color: #8fc8dd; font-size: 0.95rem; margin-bottom: 1.25rem;">
+                            Assessment basis: {{ assessment_basis }}
+                        </div>
+                        {% endif %}
+
+                        <div>
+                            <div style="display: flex; justify-content: space-between; color: #a0a0a0; font-size: 0.95rem;">
+                                <span>Analysis Confidence</span>
+                                <span style="color: var(--primary); font-weight: 700;">{{ confidence }}%</span>
+                            </div>
+                            <div class="confidence-container">
+                                <div class="confidence-fill" style="width: {{ confidence }}%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="detail-grid">
+                            {% if age %}
+                            <div class="detail-item nutri-stagger">
+                                <div class="detail-label">Age</div>
+                                <div class="detail-value">{{ age }}</div>
+                            </div>
+                            {% endif %}
+                            {% if height %}
+                            <div class="detail-item nutri-stagger">
+                                <div class="detail-label">Height (cm)</div>
+                                <div class="detail-value">{{ height }}</div>
+                            </div>
+                            {% endif %}
+                            {% if weight %}
+                            <div class="detail-item nutri-stagger">
+                                <div class="detail-label">Weight (kg)</div>
+                                <div class="detail-value">{{ weight }}</div>
+                            </div>
+                            {% endif %}
+                            <div class="detail-item nutri-stagger">
+                                <div class="detail-label">Risk Level</div>
+                                <div class="detail-value">{{ risk_level }} {{ risk_emoji }}</div>
+                            </div>
+                            <div class="detail-item nutri-stagger">
+                                <div class="detail-label">BMI Category</div>
+                                <div class="detail-value">{{ bmi_category }}</div>
+                            </div>
+                            <div class="detail-item nutri-stagger">
+                                <div class="detail-label">Estimated BMI</div>
+                                <div class="detail-value">{{ bmi_value }}</div>
+                            </div>
+                            <div class="detail-item nutri-stagger">
+                                <div class="detail-label">Protein Guidance</div>
+                                <div class="detail-value" style="font-size: 1rem;">{{ protein_recommendation }}</div>
+                            </div>
+                            <div class="detail-item nutri-stagger">
+                                <div class="detail-label">Calorie Guidance</div>
+                                <div class="detail-value" style="font-size: 1rem;">{{ calorie_recommendation }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recommendations-box nutri-stagger">
+                    <h2 style="font-size: 1.3rem; font-weight: 800; color: var(--primary); margin-bottom: 1rem;">Recommendations</h2>
+                    {% for recommendation in recommendations %}
+                    <div class="recommendation-item">
+                        <i class="fas fa-check-circle" style="color: #4ade80; margin-right: 0.5rem;"></i>{{ recommendation }}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="recommendations-box nutri-stagger" style="background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3);">
+                    <h2 style="font-size: 1.3rem; font-weight: 800; color: #fbbf24; margin-bottom: 1rem;">Precautions</h2>
+                    {% for item in precautions %}
+                    <div class="recommendation-item">
+                        <i class="fas fa-triangle-exclamation" style="color: #fbbf24; margin-right: 0.5rem;"></i>{{ item }}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="guidance-grid">
+                    <div class="guidance-card precautions nutri-stagger">
+                        <h3><i class="fas fa-shield-heart" style="margin-right: 0.5rem;"></i>Precautions</h3>
+                        <ul>
+                            {% for item in precautions %}
+                            <li>{{ item }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="guidance-card foods nutri-stagger">
+                        <h3><i class="fas fa-apple-whole" style="margin-right: 0.5rem;"></i>Foods To Eat</h3>
+                        <ul>
+                            {% for item in foods_to_eat %}
+                            <li>{{ item }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="guidance-card doctor nutri-stagger">
+                        <h3><i class="fas fa-user-doctor" style="margin-right: 0.5rem;"></i>When To See A Doctor</h3>
+                        <ul>
+                            {% for item in doctor_advice %}
+                            <li>{{ item }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem;">
+                    <a href="{{ url_for('main.dashboard') }}" class="action-button nutri-submit">Back to Dashboard</a>
+                    <a href="{{ url_for('main.dashboard') }}#analyze" class="action-button secondary nutri-submit">Analyze Again</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+        {% if category == 'success' or category == 'danger' %}
+            showNutriAlert(
+                "{{ 'success' if category == 'success' else 'error' }}",
+                "{{ 'Success!' if category == 'success' else 'Error!' }}",
+                "{{ message }}"
+            );
+        {% endif %}
+    {% endfor %}
+{% endwith %}
+    </script>
+</body>
+</html>

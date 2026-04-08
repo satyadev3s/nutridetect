@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - NutriDetect</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes bounceIn {
+            from {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes shine {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
+        }
+
+        .dashboard-input {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            background: rgba(0, 212, 255, 0.05);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            color: #e0e0e0;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .dashboard-input:hover {
+            border-color: var(--primary);
+            background: rgba(0, 212, 255, 0.08);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+        }
+
+        .dashboard-input:focus {
+            border-color: var(--primary);
+            background: rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .dashboard-input::placeholder {
+            color: #808080;
+        }
+
+        .dashboard-input:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .form-group-dashboard {
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.6s ease-out backwards;
+        }
+
+        .form-group-dashboard:nth-child(1) { animation-delay: 0.1s; }
+        .form-group-dashboard:nth-child(2) { animation-delay: 0.2s; }
+        .form-group-dashboard:nth-child(3) { animation-delay: 0.3s; }
+        .form-group-dashboard:nth-child(4) { animation-delay: 0.4s; }
+        .form-group-dashboard:nth-child(5) { animation-delay: 0.5s; }
+        .form-group-dashboard:nth-child(6) { animation-delay: 0.6s; }
+
+        .form-label-dashboard {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #e0e0e0;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .analyze-button-dashboard {
+            padding: 1.2rem 3rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--dark-bg);
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            letter-spacing: 1px;
+            animation: fadeInUp 0.6s ease-out 0.7s backwards;
+        }
+
+        .analyze-button-dashboard:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.4);
+        }
+
+        .analyze-button-dashboard:active {
+            transform: scale(0.98);
+        }
+
+        .analyze-button-dashboard:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .clear-button-dashboard {
+            padding: 1rem 2.5rem;
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .clear-button-dashboard:hover {
+            background: var(--primary);
+            color: var(--dark-bg);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .clear-button-dashboard:active {
+            transform: scale(0.98);
+        }
+
+        .photo-upload-container {
+            background: rgba(0, 212, 255, 0.05);
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: slideInRight 0.6s ease-out 0.5s backwards;
+        }
+
+        .photo-upload-container:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+        }
+
+        .photo-upload-container:active {
+            transform: scale(0.98);
+        }
+
+        .dashboard-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+            animation: bounceIn 0.6s ease-out backwards;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-card:nth-child(1) { animation-delay: 0.1s; }
+        .dashboard-card:nth-child(2) { animation-delay: 0.2s; }
+
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(0, 212, 255, 0.1) 50%, transparent 70%);
+            animation: shine 3s infinite;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 212, 255, 0.15);
+        }
+
+        .history-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            animation: slideInLeft 0.6s ease-out backwards;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .history-item:nth-child(1) { animation-delay: 0.1s; }
+        .history-item:nth-child(2) { animation-delay: 0.2s; }
+        .history-item:nth-child(3) { animation-delay: 0.3s; }
+
+        .history-item:hover {
+            transform: translateX(10px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.15);
+        }
+
+        .history-item:active {
+            transform: scale(0.98);
+        }
+
+        .history-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .history-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            font-weight: 700;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-size: 0.95rem;
+        }
+
+        .history-button.view {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--dark-bg);
+        }
+
+        .history-button.view:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(0, 212, 255, 0.25);
+        }
+
+        .history-button.delete {
+            background: rgba(239, 68, 68, 0.14);
+            color: #ff7b7b;
+            border: 1px solid rgba(239, 68, 68, 0.45);
+        }
+
+        .history-button.delete:hover {
+            background: rgba(239, 68, 68, 0.22);
+            color: #ffd5d5;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(239, 68, 68, 0.18);
+        }
+
+        .history-delete-form {
+            margin: 0;
+        }
+
+        .dashboard-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .dashboard-subtitle {
+            color: #a0a0a0;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.6s ease-out 0.1s backwards;
+        }
+
+        .scanning-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 14, 39, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .scanning-overlay.active {
+            display: flex;
+        }
+
+        .scanner-container {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            border: 3px solid var(--primary);
+            border-radius: 20px;
+            overflow: hidden;
+            background: rgba(0, 212, 255, 0.05);
+            box-shadow: 0 0 50px rgba(0, 212, 255, 0.3), inset 0 0 30px rgba(0, 212, 255, 0.1);
+        }
+
+        .scan-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), transparent);
+            top: 0;
+            left: 0;
+            animation: scanMove 2s ease-in-out infinite;
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        @keyframes scanMove {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+
+        .scan-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(0, 212, 255, 0.1) 39px, rgba(0, 212, 255, 0.1) 40px),
+                repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(0, 212, 255, 0.1) 39px, rgba(0, 212, 255, 0.1) 40px);
+        }
+
+        .scan-text {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-align: center;
+            z-index: 10;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0, 212, 255, 0.2);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-card {
+                padding: 1.5rem;
+            }
+
+            .dashboard-input {
+                padding: 0.9rem 1rem;
+            }
+
+            .analyze-button-dashboard {
+                padding: 1rem 2rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="no-bg-image">
+    <nav class="navbar">
+        <a href="{{ url_for('main.home') }}" class="navbar-brand">
+            <i class="fas fa-leaf"></i> NutriDetect
+        </a>
+        <ul class="navbar-menu">
+            <li style="margin-left: auto;"><a href="{{ url_for('main.logout') }}" style="color: var(--primary); font-weight: 600; text-decoration: none; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.color='var(--secondary)'" onmouseout="this.style.color='var(--primary)'">Logout</a></li>
+        </ul>
+    </nav>
+
+    <main style="margin-top: 80px;">
+        <section style="padding: 4rem 2rem; max-width: 1400px; margin: 0 auto;">
+            <div class="dashboard-card nutri-panel">
+                <h1 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 1rem;">
+                    Welcome, <span id="dashboardUsername" style="color: var(--primary);">{{ name }}</span>!
+                </h1>
+                <p style="color: #a0a0a0; font-size: 1.1rem; line-height: 1.8;">
+                    Ready to analyze your nutritional health? Update your profile and upload an image to get started with our advanced AI analysis.
+                </p>
+            </div>
+        </section>
+
+        <section style="padding: 4rem 2rem; max-width: 1400px; margin: 0 auto;" id="analyze">
+            <div class="dashboard-card nutri-panel">
+                <h2 class="dashboard-title">
+                    <i class="fas fa-user-circle"></i> Your Profile Information
+                </h2>
+                <p class="dashboard-subtitle">Update your details for accurate health analysis</p>
+
+                <form id="profileForm" action="{{ url_for('main.predict') }}" method="POST" enctype="multipart/form-data" style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;">
+                    <div>
+                        <div class="form-group-dashboard nutri-stagger">
+                            <label class="form-label-dashboard">
+                                <i class="fas fa-user"></i> Full Name
+                            </label>
+                            <input type="text" id="profileName" name="full_name" class="dashboard-input nutri-field" placeholder="Your full name" value="{{ name }}" required>
+                        </div>
+
+                        <div class="form-group-dashboard nutri-stagger">
+                            <label class="form-label-dashboard">
+                                <i class="fas fa-birthday-cake"></i> Age (years)
+                            </label>
+                            <input type="number" id="profileAge" name="age" class="dashboard-input nutri-field" placeholder="Enter your age" min="1" max="120">
+                        </div>
+
+                        <div class="form-group-dashboard nutri-stagger">
+                            <label class="form-label-dashboard">
+                                <i class="fas fa-ruler-vertical"></i> Height (cm)
+                            </label>
+                            <input type="number" id="profileHeight" name="height" class="dashboard-input nutri-field" placeholder="Enter your height in cm" min="50" max="250">
+                        </div>
+
+                        <div class="form-group-dashboard nutri-stagger">
+                            <label class="form-label-dashboard">
+                                <i class="fas fa-weight"></i> Weight (kg)
+                            </label>
+                            <input type="number" id="profileWeight" name="weight" class="dashboard-input nutri-field" placeholder="Enter your weight in kg" min="20" max="300" step="0.1">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="form-label-dashboard">
+                            <i class="fas fa-camera"></i> Upload Photo
+                        </label>
+                        <div id="photoUploadContainer" class="photo-upload-container nutri-stagger">
+                            <input type="file" id="profilePhoto" name="file" accept="image/*" style="display: none;" required>
+                            <i class="fas fa-cloud-upload-alt" style="font-size: 2.5rem; color: var(--primary); display: block; margin-bottom: 1rem;"></i>
+                            <p style="color: #a0a0a0; margin-bottom: 0.5rem; font-weight: 600;">Click or drag to upload your photo</p>
+                            <p style="color: #808080; font-size: 0.85rem;">PNG, JPG, GIF up to 5MB</p>
+                        </div>
+                        <div id="photoPreviewContainer" style="display: none;">
+                            <img id="photoPreview" style="width: 100%; max-height: 250px; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 1rem;">
+                            <button type="button" onclick="clearPhoto()" class="clear-button-dashboard nutri-submit" style="width: 100%;">
+                                <i class="fas fa-times"></i> Remove Photo
+                            </button>
+                        </div>
+                    </div>
+                    <div style="grid-column: 1 / -1;">
+                        <button type="submit" class="analyze-button-dashboard nutri-submit nutri-stagger" style="margin-top: 2rem;">
+                            <i class="fas fa-wand-magic-sparkles"></i> Analyze My Health
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section style="padding: 4rem 2rem; max-width: 1400px; margin: 0 auto;" id="history">
+            <h2 class="dashboard-title">
+                <i class="fas fa-history"></i> Analysis History
+            </h2>
+            <p class="dashboard-subtitle">Your previous analyses and health insights</p>
+            <div id="historyContainer" class="nutri-panel" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem; color: #a0a0a0;">
+                {% if history %}
+                    {% for item in history %}
+                    <div class="history-item nutri-stagger">
+                        <div style="display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; align-items: center;">
+                            <div>
+                                <div style="font-size: 1.1rem; font-weight: 700; color: var(--primary); margin-bottom: 0.35rem;">{{ item.ai_status }}</div>
+                                <div style="color: #c0c0c0; margin-bottom: 0.35rem;">
+                                    Confidence: {{ item.confidence }}%
+                                    {% if item.bmi %}
+                                    | BMI: {{ '%.1f'|format(item.bmi) }} ({{ item.bmi_category }})
+                                    {% endif %}
+                                </div>
+                                <div style="font-size: 0.9rem; color: #909090;">
+                                    {{ format_datetime(item.timestamp) if item.timestamp else '' }}
+                                </div>
+                            </div>
+                            <div class="history-actions">
+                                <a href="{{ url_for('main.analysis_report', analysis_id=item.id) }}" class="history-button view nutri-submit">
+                                    <i class="fas fa-file-alt"></i> View Report
+                                </a>
+                                <form method="POST" action="{{ url_for('main.delete_analysis', analysis_id=item.id) }}" class="history-delete-form" onsubmit="return confirm('Remove this history item?');">
+                                    <button type="submit" class="history-button delete nutri-submit">
+                                        <i class="fas fa-trash-alt"></i> Remove
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p style="text-align: center;">No analysis history yet. <a href="#analyze" style="color: var(--primary); text-decoration: underline;">Start by analyzing your health profile!</a></p>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+
+    <div class="scanning-overlay" id="scanningOverlay">
+        <div class="scanner-container">
+            <div class="scan-grid"></div>
+            <div class="scan-line"></div>
+            <div class="scan-text">
+                <div class="spinner"></div>
+                <p>Analyzing your health data...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+        {% if category == 'success' or category == 'danger' %}
+            showNutriAlert(
+                "{{ 'success' if category == 'success' else 'error' }}",
+                "{{ 'Success!' if category == 'success' else 'Error!' }}",
+                "{{ message }}"
+            );
+        {% endif %}
+    {% endfor %}
+{% endwith %}
+    </script>
+</body>
+</html>

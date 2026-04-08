@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found - NutriDetect</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .not-found-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 24px 60px rgba(0, 212, 255, 0.12);
+        }
+
+        .not-found-code {
+            font-size: 5rem;
+            font-weight: 900;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        .not-found-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #f0f4ff;
+            margin-bottom: 1rem;
+        }
+
+        .not-found-text {
+            color: #9aa7bd;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            max-width: 640px;
+            margin: 0 auto 2rem;
+        }
+
+        .not-found-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .not-found-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .not-found-button.primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--dark-bg);
+        }
+
+        .not-found-button.secondary {
+            border: 1px solid var(--border-color);
+            color: var(--primary);
+            background: rgba(0, 212, 255, 0.08);
+        }
+
+        .not-found-button:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="{{ url_for('main.home') }}" class="navbar-brand">
+            <i class="fas fa-leaf"></i> NutriDetect
+        </a>
+    </nav>
+
+    <main style="margin-top: 90px; min-height: calc(100vh - 90px); display: flex; align-items: center; justify-content: center; padding: 2rem;">
+        <section style="width: 100%; max-width: 900px;">
+            <div class="not-found-card">
+                <div class="not-found-code">404</div>
+                <h1 class="not-found-title">This page could not be found</h1>
+                <p class="not-found-text">
+                    The link may be wrong, expired, or the page may have moved. You can go back to the home page,
+                    open your dashboard, or start a new analysis from there.
+                </p>
+                <div class="not-found-actions">
+                    <a href="{{ url_for('main.home') }}" class="not-found-button primary">
+                        <i class="fas fa-home"></i> Go Home
+                    </a>
+                    <a href="{{ url_for('main.dashboard') }}" class="not-found-button secondary">
+                        <i class="fas fa-columns"></i> Open Dashboard
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

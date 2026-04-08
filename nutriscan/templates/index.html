@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriDetect - AI-Powered Malnutrition Detection</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Change from <link rel="stylesheet" href="style.css"> to: -->
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="{{ url_for('main.home') }}" class="navbar-brand">
+            <i class="fas fa-leaf"></i> NutriDetect
+        </a>
+        <ul class="navbar-menu">
+            <li><a href="{{ url_for('main.home') }}"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="{{ url_for('main.features') }}"><i class="fas fa-star"></i> Features</a></li>
+            <li><a href="{{ url_for('main.about') }}"><i class="fas fa-users"></i> About</a></li>
+            <li><a href="{{ url_for('main.contact') }}"><i class="fas fa-envelope"></i> Contact</a></li>
+            <li><a href="{{ url_for('main.login_page') }}" class="navbar-btn">Login</a></li>
+            <li><a href="{{ url_for('main.register_page') }}" class="navbar-btn register-btn">Register</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-bg">
+                <div class="floating-orb orb-1"></div>
+                <div class="floating-orb orb-2"></div>
+                <div class="floating-orb orb-3"></div>
+            </div>
+            <div class="hero-content">
+                <h1>AI-Powered Malnutrition Detection</h1>
+                <p>Advanced AI technology to analyze nutritional health with precision and speed. Upload your image and let our AI provide instant insights in seconds.</p>
+                <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
+                    <a href="{{ url_for('main.register_page') }}" class="cta-button">
+                        <i class="fas fa-rocket"></i> Get Started Free
+                    </a>
+                    <a href="{{ url_for('main.features') }}" class="cta-button" style="background: transparent; color: var(--primary); border: 2px solid var(--primary);">
+                        <i class="fas fa-play-circle"></i> Learn More
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Preview Section -->
+        <section class="features" id="features" style="padding: 6rem 2rem; max-width: 1400px; margin: 0 auto;">
+            <h2 class="section-title">Why Choose NutriDetect?</h2>
+            <p style="text-align: center; color: #a0a0a0; font-size: 1.1rem; margin-bottom: 3rem; max-width: 700px; margin-left: auto; margin-right: auto;">Revolutionary AI technology for comprehensive nutritional health analysis</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI-Powered Detection</h3>
+                    <p>Advanced machine learning algorithms trained on thousands of medical images for accurate detection with 99.2% accuracy.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Lightning Fast Analysis</h3>
+                    <p>Get results in under 2 seconds. Our optimized AI processes images at unprecedented speeds without compromising accuracy.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Privacy First Approach</h3>
+                    <p>Your data is encrypted and processed securely. We never store or share your images. HIPAA compliant and certified.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Detailed Reports</h3>
+                    <p>Comprehensive analysis with confidence scores, risk factors, trends, and personalized health recommendations tailored for you.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section style="padding: 6rem 2rem; max-width: 1400px; margin: 0 auto; position: relative; z-index: 1;">
+            <h2 style="font-size: 2.3rem; font-weight: 900; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: center; margin-bottom: 1rem;">How It Works</h2>
+            <p style="text-align: center; color: #a0a0a0; font-size: 1.1rem; margin-bottom: 4rem; max-width: 700px; margin-left: auto; margin-right: auto;">Simple 3-step process to get your nutritional analysis</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+                <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2.5rem; text-align: center; animation: bounceIn 0.6s ease-out backwards; transition: all 0.4s ease; cursor: pointer; position: relative; overflow: hidden;" onmouseover="this.style.transform='translateY(-15px) scale(1.05)'; this.style.borderColor='var(--primary)'; this.style.boxShadow='0 30px 60px rgba(0, 212, 255, 0.3)'" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.borderColor='var(--border-color)'; this.style.boxShadow='none'">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: var(--dark-bg); margin: 0 auto 1.5rem; font-weight: 900;">1</div>
+                    <h3 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 1rem; color: #e0e0e0;">Upload Your Photo</h3>
+                    <p style="color: #a0a0a0; line-height: 1.6;">Take a photo or upload an existing image of yourself or your health data</p>
+                </div>
+
+                <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2.5rem; text-align: center; animation: bounceIn 0.6s ease-out 0.1s backwards; transition: all 0.4s ease; cursor: pointer; position: relative; overflow: hidden;" onmouseover="this.style.transform='translateY(-15px) scale(1.05)'; this.style.borderColor='var(--primary)'; this.style.boxShadow='0 30px 60px rgba(0, 212, 255, 0.3)'" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.borderColor='var(--border-color)'; this.style.boxShadow='none'">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: var(--dark-bg); margin: 0 auto 1.5rem; font-weight: 900;">2</div>
+                    <h3 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 1rem; color: #e0e0e0;">AI Analysis</h3>
+                    <p style="color: #a0a0a0; line-height: 1.6;">Our advanced AI processes your image in real-time using deep learning algorithms</p>
+                </div>
+
+                <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2.5rem; text-align: center; animation: bounceIn 0.6s ease-out 0.2s backwards; transition: all 0.4s ease; cursor: pointer; position: relative; overflow: hidden;" onmouseover="this.style.transform='translateY(-15px) scale(1.05)'; this.style.borderColor='var(--primary)'; this.style.boxShadow='0 30px 60px rgba(0, 212, 255, 0.3)'" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.borderColor='var(--border-color)'; this.style.boxShadow='none'">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: var(--dark-bg); margin: 0 auto 1.5rem; font-weight: 900;">3</div>
+                    <h3 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 1rem; color: #e0e0e0;">Get Results</h3>
+                    <p style="color: #a0a0a0; line-height: 1.6;">Receive detailed analysis, insights, and personalized recommendations instantly</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section style="padding: 6rem 2rem; max-width: 1400px; margin: 0 auto; position: relative; z-index: 1;">
+            <h2 style="font-size: 2.3rem; font-weight: 900; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: center; margin-bottom: 1rem;">What Users Say</h2>
+            <p style="text-align: center; color: #a0a0a0; font-size: 1.1rem; margin-bottom: 4rem; max-width: 700px; margin-left: auto; margin-right: auto;">Join thousands of satisfied users improving their health with NutriDetect</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2.5rem; animation: bounceIn 0.6s ease-out backwards; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-10px)'; this.style.borderColor='var(--primary)'; this.style.boxShadow='0 20px 50px rgba(0, 212, 255, 0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border-color)'; this.style.boxShadow='none'">
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                        <i class="fas fa-star" style="color: var(--primary);"></i>
+                        <i class="fas fa-star" style="color: var(--primary);"></i>
+                        <i class="fas fa-star" style="color: var(--primary);"></i>
+                        <i class="fas fa-star" style="color: var(--primary);"></i>
+                        <i class="fas fa-star" style="color: var(--primary);"></i>
+                    </div>
+                    <p style="color: #c0c0c0; line-height: 1.6; margin-bottom: 1.5rem; font-style: italic;">"NutriDetect completely changed how I manage my health. The AI analysis is incredibly accurate and the recommendations are personalized!"</p>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--dark-bg); font-weight: 700; font-size: 1.2rem;">SR</div>
+                        <div>
+                            <h4 style="color: #e0e0e0; font-weight: 700; margin-bottom: 0.2rem;">Sarah Rodriguez</h4>
+                            <p style="color: #a0a0a0; font-size: 0.9rem;">Nutrition Coach, NYC</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2.5rem; animation: bounceIn 0.6s ease-out 0.1s backwards; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-10px)'; this.style.borderColor='var(--primary)'; this.style.boxShadow='0 20px 50px rgba(0, 212, 255, 0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border-color)'; this.style.boxShadow='none'">
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                        <i class="fas fa-star" style="color: var(--primary);"></i>
+                        <i class="fas fa-star" style="color: var(--primary);"></i>
+                        <i class="fas fa-star" style="color: var(--primary);"></i>
+                        <i class="fas fa-star" style="color: var(--primary);"></i>
+                        <i class="fas fa-star" style="color: var(--primary);"></i>
+                    </div>
+                    <p style="color: #c0c0c0; line-height: 1.6; margin-bottom: 1.5rem; font-style: italic;">"As a doctor, I'm impressed by the clinical accuracy. I now recommend NutriDetect to all my patients for preliminary nutritional screening."</p>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--dark-bg); font-weight: 700; font-size: 1.2rem;">JM</div>
+                        <div>
+                            <h4 style="color: #e0e0e0; font-weight: 700; margin-bottom: 0.2rem;">Dr. James Mitchell</h4>
+                            <p style="color: #a0a0a0; font-size: 0.9rem;">Medical Director, Boston</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2.5rem; animation: bounceIn 0.6s ease-out 0.2s backwards; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-10px)'; this.style.borderColor='var(--primary)'; this.style.boxShadow='0 20px 50px rgba(0, 212, 255, 0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='var(--border-color)'; this.style.boxShadow='none'">
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                        <i class="fas fa-star" style="color: var(--primary);"></i>
+                        <i class="fas fa-star" style="color: var(--primary);"></i>
+                        <i class="fas fa-star" style="color: var(--primary);"></i>
+                        <i class="fas fa-star" style="color: var(--primary);"></i>
+                        <i class="fas fa-star" style="color: var(--primary);"></i>
+                    </div>
+                    <p style="color: #c0c0c0; line-height: 1.6; margin-bottom: 1.5rem; font-style: italic;">"The interface is so intuitive and the insights are actionable. I've improved my nutrition significantly using NutriDetect's recommendations."</p>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--dark-bg); font-weight: 700; font-size: 1.2rem;">AK</div>
+                        <div>
+                            <h4 style="color: #e0e0e0; font-weight: 700; margin-bottom: 0.2rem;">Aisha Khan</h4>
+                            <p style="color: #a0a0a0; font-size: 0.9rem;">Fitness Enthusiast, London</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section style="padding: 6rem 2rem; max-width: 1200px; margin: 0 auto; position: relative; z-index: 1;">
+            <div style="background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(0, 136, 255, 0.08)); border: 2px solid var(--border-color); border-radius: 25px; padding: 4rem 3rem; text-align: center; animation: slideInUp 0.8s ease-out; box-shadow: 0 0 50px rgba(0, 212, 255, 0.1);">
+                <h2 style="font-size: 2.2rem; font-weight: 900; color: var(--primary); margin-bottom: 1rem;">
+                    Ready to Transform Your Health?
+                </h2>
+                <p style="font-size: 1.1rem; color: #b0b0b0; margin-bottom: 2.5rem; line-height: 1.8; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    Join thousands of users who have already discovered their optimal nutritional health. Start your journey today with our free analysis!
+                </p>
+                <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="{{ url_for('main.register_page') }}" class="cta-button" style="display: inline-block;">
+                        <i class="fas fa-check-circle"></i> Start Free Analysis
+                    </a>
+                    <a href="{{ url_for('main.features') }}" class="cta-button" style="display: inline-block; background: transparent; color: var(--primary); border: 2px solid var(--primary);">
+                        <i class="fas fa-arrow-right"></i> Explore Features
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About NutriDetect</h4>
+                <p style="color: #a0a0a0; margin-bottom: 1rem;">
+                    NutriDetect uses advanced AI to provide instant nutritional health analysis. Our mission is to make healthcare accessible to everyone.
+                </p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon" title="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-icon" title="Facebook">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="#" class="social-icon" title="LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="#" class="social-icon" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <a href="{{ url_for('main.home') }}">Home</a>
+                <a href="{{ url_for('main.features') }}">Features</a>
+                <a href="{{ url_for('main.about') }}">About Us</a>
+                <a href="{{ url_for('main.contact') }}">Contact</a>
+                <a href="{{ url_for('main.login_page') }}">Login</a>
+            </div>
+
+            <div class="footer-section">
+                <h4>Support</h4>
+                <a href="#">Help Center</a>
+                <a href="#">Documentation</a>
+                <a href="#">API Docs</a>
+                <a href="#">FAQ</a>
+                <a href="#">Contact Support</a>
+            </div>
+
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+                <a href="#">Compliance</a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 NutriDetect AI. All rights reserved. | Made with <span style="color: var(--accent);">â¤</span> for healthcare.</p>
+        </div>
+    </footer>
+
+   <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>

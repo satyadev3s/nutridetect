@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - NutriDetect</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<!-- Change from <link rel="stylesheet" href="style.css"> to: -->
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">  
+  <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes bounceIn {
+            from {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Doctor Card Styles */
+        .doctor-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            animation: bounceIn 0.6s ease-out backwards;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .doctor-card:nth-child(1) { animation-delay: 0.1s; }
+        .doctor-card:nth-child(2) { animation-delay: 0.2s; }
+        .doctor-card:nth-child(3) { animation-delay: 0.3s; }
+        .doctor-card:nth-child(4) { animation-delay: 0.4s; }
+        .doctor-card:nth-child(5) { animation-delay: 0.5s; }
+        .doctor-card:nth-child(6) { animation-delay: 0.6s; }
+
+        .doctor-card:hover {
+            transform: translateY(-15px) scale(1.05);
+            border-color: var(--primary);
+            box-shadow: 0 30px 60px rgba(0, 212, 255, 0.25);
+        }
+
+        .doctor-card:active {
+            transform: scale(0.98) translateY(-10px);
+        }
+
+        .doctor-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--dark-bg);
+            border: 3px solid var(--border-color);
+        }
+
+        .doctor-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #e0e0e0;
+            margin-bottom: 0.3rem;
+        }
+
+        .doctor-title {
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .doctor-specialization {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Section Title */
+        .section-title {
+            font-size: 2.3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+            color: #a0a0a0;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease-out 0.1s backwards;
+        }
+
+        /* Stats Section */
+        .stats-about {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 136, 255, 0.05));
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            animation: bounceIn 0.6s ease-out backwards;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 50px rgba(0, 212, 255, 0.2);
+        }
+
+        .stat-card:active {
+            transform: scale(0.95);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.95rem;
+            color: #a0a0a0;
+            font-weight: 600;
+        }
+
+        /* Hero Section */
+        .hero-about {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(0, 136, 255, 0.05) 100%);
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            padding: 5rem 3rem;
+            margin-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        .hero-about::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.15), transparent);
+            border-radius: 50%;
+            filter: blur(40px);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .hero-about h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-about p {
+            font-size: 1.1rem;
+            color: #b0b0b0;
+            line-height: 1.8;
+            max-width: 700px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .hero-about h1 {
+                font-size: 2rem;
+            }
+
+            .doctor-card {
+                padding: 1.5rem;
+            }
+
+            .stats-about {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+    <a href="{{ url_for('main.home') }}" class="navbar-brand">
+        <i class="fas fa-leaf"></i> NutriDetect
+    </a>
+    <ul class="navbar-menu">
+        <li><a href="{{ url_for('main.home') }}">Home</a></li>
+        <li><a href="{{ url_for('main.features') }}">Features</a></li>
+        <li><a href="{{ url_for('main.about') }}">About</a></li>
+        <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
+        <li style="margin-left: auto;">
+            <a href="{{ url_for('main.login_page') }}" style="color: var(--primary); font-weight: 600;">
+                Login
+            </a>
+        </li>
+        <li><a href="{{ url_for('main.register_page') }}" class="navbar-btn register-btn">Register</a></li>
+    </ul>
+</nav>
+    <!-- Main Content -->
+    <main style="margin-top: 80px;">
+        <!-- Hero Section -->
+        <section style="padding: 4rem 2rem; max-width: 1400px; margin: 0 auto;">
+            <div class="hero-about">
+                <h1>Specialized Malnutrition Experts</h1>
+                <p>Our team of dedicated healthcare professionals is committed to revolutionizing nutritional health detection through advanced AI technology</p>
+            </div>
+        </section>
+
+        <!-- Statistics Section -->
+        <section style="padding: 4rem 2rem; max-width: 1400px; margin: 0 auto;">
+            <h2 class="section-title">Our Impact</h2>
+            <p class="section-subtitle">Making a real difference in global health</p>
+            
+            <div class="stats-about">
+                <div class="stat-card">
+                    <div class="stat-number">50K+</div>
+                    <div class="stat-label">Active Users</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">500K+</div>
+                    <div class="stat-label">Analyses Performed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">99.2%</div>
+                    <div class="stat-label">Accuracy Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">150+</div>
+                    <div class="stat-label">Hospitals Using</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Doctors/Experts Section -->
+        <section style="padding: 6rem 2rem; max-width: 1400px; margin: 0 auto;">
+            <h2 class="section-title">Our Specialist Doctors</h2>
+            <p class="section-subtitle">Leading experts in malnutrition detection and nutritional health</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
+                <div class="doctor-card">
+                    <div class="doctor-image">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div class="doctor-name">Dr. Sarah Johnson</div>
+                    <div class="doctor-title">Chief Medical Officer</div>
+                    <div class="doctor-specialization">MD in Clinical Nutrition | 15+ years in malnutrition research and diagnosis</div>
+                </div>
+
+                <div class="doctor-card">
+                    <div class="doctor-image">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div class="doctor-name">Dr. Michael Chen</div>
+                    <div class="doctor-title">Head of Nutrition Science</div>
+                    <div class="doctor-specialization">PhD in Nutritional Medicine | Specialist in dietary deficiency detection</div>
+                </div>
+
+                <div class="doctor-card">
+                    <div class="doctor-image">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div class="doctor-name">Dr. Priya Patel</div>
+                    <div class="doctor-title">Director of Clinical Operations</div>
+                    <div class="doctor-specialization">Board Certified Dietitian | 20+ years in healthcare systems</div>
+                </div>
+
+                <div class="doctor-card">
+                    <div class="doctor-image">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div class="doctor-name">Dr. James Wilson</div>
+                    <div class="doctor-title">Head of AI & Medical Research</div>
+                    <div class="doctor-specialization">MD & AI Specialist | Pioneering malnutrition AI detection</div>
+                </div>
+
+                <div class="doctor-card">
+                    <div class="doctor-image">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div class="doctor-name">Dr. Emma Rodriguez</div>
+                    <div class="doctor-title">Lead Pediatric Nutritionist</div>
+                    <div class="doctor-specialization">Specialist in children's malnutrition | 12+ years pediatric expertise</div>
+                </div>
+
+                <div class="doctor-card">
+                    <div class="doctor-image">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div class="doctor-name">Dr. Ahmed Hassan</div>
+                    <div class="doctor-title">Global Health Consultant</div>
+                    <div class="doctor-specialization">Expert in developing countries malnutrition solutions | WHO advisor</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section style="padding: 6rem 2rem; max-width: 1200px; margin: 0 auto;">
+            <div style="background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(0, 136, 255, 0.08)); border: 2px solid var(--border-color); border-radius: 25px; padding: 4rem 3rem; text-align: center; animation: fadeInUp 0.8s ease-out;">
+                <h2 style="font-size: 2rem; font-weight: 900; color: var(--primary); margin-bottom: 1rem;">
+                    Join Our Mission
+                </h2>
+                <p style="font-size: 1rem; color: #b0b0b0; margin-bottom: 2rem;">
+                    Help us fight malnutrition with advanced AI technology
+                </p>
+                <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="{{ url_for('main.register_page') }}" style="padding: 1.2rem 3rem; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: var(--dark-bg); text-decoration: none; border-radius: 10px; font-weight: 700; transition: all 0.3s ease; border: none; cursor: pointer; display: inline-block;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 10px 50px rgba(0, 212, 255, 0.5)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 0 30px rgba(0, 212, 255, 0.3)'" href="{{ url_for('main.register_page') }}">Get Started</a>
+                    <a href="{{ url_for('main.contact') }}" style="padding: 1.2rem 3rem; background: transparent; color: var(--primary); text-decoration: none; border: 2px solid var(--primary); border-radius: 10px; font-weight: 700; transition: all 0.3s ease; cursor: pointer; display: inline-block;" onmouseover="this.style.backgroundColor='var(--primary)'; this.style.color='var(--dark-bg)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--primary)'; this.style.transform='translateY(0)'" href="{{ url_for('main.contact') }}">Learn More</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About NutriDetect</h4>
+                <p style="color: #a0a0a0; margin-bottom: 1rem;">
+                    Advanced AI nutrition analysis for better health outcomes.
+                </p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon" title="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-icon" title="Facebook">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="#" class="social-icon" title="LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="#" class="social-icon" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+               <a href="{{ url_for('main.home') }}">Home</a>
+<a href="{{ url_for('main.features') }}">Features</a>
+<a href="{{ url_for('main.about') }}">About</a>
+<a href="{{ url_for('main.contact') }}">Contact</a>
+<a href="{{ url_for('main.login_page') }}">Login</a>
+            </div>
+
+            <div class="footer-section">
+                <h4>Support</h4>
+                <a href="#">Help Center</a>
+                <a href="#">Documentation</a>
+                <a href="#">FAQ</a>
+                <a href="#">Contact Support</a>
+            </div>
+
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+                <a href="#">Compliance</a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 NutriDetect AI. All rights reserved. | Made with <span style="color: var(--accent);">â¤</span> for healthcare.</p>
+        </div>
+    </footer>
+
+   <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - NutriDetect</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<!-- Change from <link rel="stylesheet" href="style.css"> to: -->
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounceIn {
+            from {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Background Image */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(135deg, rgba(6, 12, 29, 0.84) 0%, rgba(10, 36, 68, 0.78) 100%),
+                url("{{ url_for('static', filename='bgimg.png') }}"),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse"><circle cx="30" cy="30" r="1" fill="rgba(0,212,255,0.05)"/></pattern></defs><rect width="1200" height="800" fill="url(%23grid)"/></svg>');
+            background-size: cover, cover, auto;
+            background-position: center center, 50% 22%, center center;
+            background-repeat: no-repeat, no-repeat, repeat;
+            background-attachment: fixed, fixed, fixed;
+            pointer-events: none;
+            z-index: -1;
+            animation: authBgFloat 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes authBgFloat {
+            0% { transform: scale(1) translate3d(0, 0, 0); }
+            100% { transform: scale(1.05) translate3d(1.2%, -1.2%, 0); }
+        }
+
+        /* Form Input Styles */
+        .form-input-register {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            background: rgba(0, 212, 255, 0.05);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            color: #e0e0e0;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .form-input-register:hover {
+            border-color: var(--primary);
+            background: rgba(0, 212, 255, 0.08);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+        }
+
+        .form-input-register:focus {
+            border-color: var(--primary);
+            background: rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .form-input-register::placeholder {
+            color: #808080;
+        }
+
+        .form-group-register {
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.6s ease-out backwards;
+        }
+
+        .form-group-register:nth-child(1) { animation-delay: 0.2s; }
+        .form-group-register:nth-child(2) { animation-delay: 0.3s; }
+        .form-group-register:nth-child(3) { animation-delay: 0.4s; }
+        .form-group-register:nth-child(4) { animation-delay: 0.5s; }
+        .form-group-register:nth-child(5) { animation-delay: 0.6s; }
+
+        .form-label-register {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #e0e0e0;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .register-button {
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--dark-bg);
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            letter-spacing: 1px;
+            animation: fadeInUp 0.6s ease-out 0.7s backwards;
+        }
+
+        .register-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.4);
+        }
+
+        .register-button:active {
+            transform: scale(0.98);
+        }
+
+        /* Checkbox */
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #a0a0a0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+            animation: fadeInUp 0.6s ease-out 0.6s backwards;
+            font-size: 0.9rem;
+        }
+
+        .checkbox-label:hover {
+            color: var(--primary);
+        }
+
+        .checkbox-label input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        /* Link Styles */
+        .auth-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .auth-link:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+        /* Register Container */
+        .register-container {
+            position: relative;
+            z-index: 2;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 212, 255, 0.2);
+            animation: bounceIn 0.8s ease-out;
+        }
+
+        .auth-page-shell {
+            position: relative;
+            z-index: 2;
+        }
+
+        .form-input-register {
+            background: rgba(7, 20, 44, 0.88);
+            border-color: rgba(0, 212, 255, 0.35);
+        }
+
+        .form-input-register::placeholder {
+            color: #9fb1c5;
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out 0.1s backwards;
+        }
+
+        .register-logo {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .register-title {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .register-subtitle {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body::before {
+                background-position: center center, 58% 18%, center center;
+            }
+
+            .register-container {
+                padding: 2rem;
+            }
+
+            .form-input-register {
+                padding: 0.9rem 1rem;
+            }
+
+            .register-button {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body::before {
+                background-position: center center, 62% 16%, center center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="{{ url_for('main.home') }}" class="navbar-brand">
+            <i class="fas fa-leaf"></i> NutriDetect
+        </a>
+        <ul class="navbar-menu">
+            <li><a href="{{ url_for('main.home') }}">Home</a></li>
+            <li><a href="{{ url_for('main.features') }}">Features</a></li>
+            <li><a href="{{ url_for('main.about') }}">About</a></li>
+            <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
+            <li style="margin-left: auto;"><a href="{{ url_for('main.login_page') }}" style="color: var(--primary); font-weight: 600; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.color='var(--secondary)'" onmouseout="this.style.color='var(--primary)'">Login</a></li>
+            <li><a href="{{ url_for('main.register_page') }}" class="navbar-btn register-btn">Register</a></li>
+        </ul>
+    </nav>
+
+    <!-- Register Container -->
+    <div class="auth-page-shell" style="margin-top: 80px; min-height: calc(100vh - 80px); display: flex; align-items: center; justify-content: center; padding: 2rem;">
+        <div class="register-container nutri-panel">
+            
+            <!-- Logo -->
+            <div class="register-header">
+                <i class="fas fa-leaf register-logo"></i>
+                <h1 class="register-title">NutriDetect</h1>
+                <p class="register-subtitle">Create Your Account</p>
+            </div>
+
+            <!-- Register Form -->
+            <form action="/register" method="POST">
+                <div class="form-group-register nutri-stagger">
+                    <label class="form-label-register">Full Name</label>
+                    <input type="text" name="full_name" class="form-input-register nutri-field" placeholder="John Doe" required>
+                </div>
+
+                <div class="form-group-register nutri-stagger">
+                    <label class="form-label-register">Email Address</label>
+                    <input type="email" name="email" class="form-input-register nutri-field" placeholder="you@example.com" required>
+                </div>
+
+                <div class="form-group-register nutri-stagger">
+                    <label class="form-label-register">Password</label>
+                    <input type="password" name="password" class="form-input-register nutri-field" placeholder="Create a strong password" required>
+                </div>
+
+                <div class="form-group-register nutri-stagger">
+                    <label class="form-label-register">Confirm Password</label>
+                    <input type="password" name="confirm_password" class="form-input-register nutri-field" placeholder="Confirm your password" required>
+                </div>
+
+                <label class="checkbox-label nutri-stagger">
+                    <input type="checkbox" id="termsCheckbox" required>
+                    <span>I agree to the <span class="auth-link">Terms of Service</span> and <span class="auth-link">Privacy Policy</span></span>
+                </label>
+
+                <button type="submit" class="register-button nutri-submit nutri-stagger">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+            </form>
+
+            <!-- Sign In Link -->
+            <div style="text-align: center; padding-top: 1.5rem; border-top: 1px solid var(--border-color); color: #a0a0a0; animation: fadeInUp 0.6s ease-out 0.8s backwards;">
+                Already have an account? 
+                <a href="{{ url_for('main.login_page') }}" class="auth-link">Sign in</a>
+            </div>
+        </div>
+    </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+        {% if category == 'success' or category == 'danger' %}
+            showNutriAlert(
+                "{{ 'success' if category == 'success' else 'error' }}",
+                "{{ 'Success!' if category == 'success' else 'Error!' }}",
+                "{{ message }}"
+            );
+        {% endif %}
+    {% endfor %}
+{% endwith %}
+</script>
+</body>
+</html>

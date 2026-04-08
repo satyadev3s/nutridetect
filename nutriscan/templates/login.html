@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - NutriDetect</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes bounceIn {
+            from {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Background Image */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(135deg, rgba(6, 12, 29, 0.84) 0%, rgba(10, 36, 68, 0.78) 100%),
+                url("{{ url_for('static', filename='bgimg.png') }}"),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse"><circle cx="30" cy="30" r="1" fill="rgba(0,212,255,0.05)"/></pattern></defs><rect width="1200" height="800" fill="url(%23grid)"/></svg>');
+            background-size: cover, cover, auto;
+            background-position: center center, 50% 22%, center center;
+            background-repeat: no-repeat, no-repeat, repeat;
+            background-attachment: fixed, fixed, fixed;
+            pointer-events: none;
+            z-index: -1;
+            animation: authBgFloat 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes authBgFloat {
+            0% { transform: scale(1) translate3d(0, 0, 0); }
+            100% { transform: scale(1.05) translate3d(1.2%, -1.2%, 0); }
+        }
+
+        /* Form Input Styles */
+        .form-input-login {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            background: rgba(0, 212, 255, 0.05);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            color: #e0e0e0;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .form-input-login:hover {
+            border-color: var(--primary);
+            background: rgba(0, 212, 255, 0.08);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+        }
+
+        .form-input-login:focus {
+            border-color: var(--primary);
+            background: rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .form-input-login::placeholder {
+            color: #808080;
+        }
+
+        .form-group-login {
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.6s ease-out backwards;
+        }
+
+        .form-group-login:nth-child(1) { animation-delay: 0.2s; }
+        .form-group-login:nth-child(2) { animation-delay: 0.3s; }
+        .form-group-login:nth-child(3) { animation-delay: 0.4s; }
+
+        .form-label-login {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #e0e0e0;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .login-button {
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--dark-bg);
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            letter-spacing: 1px;
+            animation: fadeInUp 0.6s ease-out 0.5s backwards;
+        }
+
+        .login-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.4);
+        }
+
+        .login-button:active {
+            transform: scale(0.98);
+        }
+
+        /* Social Button Styles */
+        .social-btn {
+            padding: 1rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            animation: fadeInUp 0.6s ease-out backwards;
+        }
+
+        .social-btn:nth-child(1) { animation-delay: 0.6s; }
+        .social-btn:nth-child(2) { animation-delay: 0.7s; }
+
+        .social-btn:hover {
+            border-color: var(--primary);
+            background: rgba(0, 212, 255, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+        }
+
+        .social-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Link Styles */
+        .auth-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .auth-link:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #a0a0a0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .checkbox-label:hover {
+            color: var(--primary);
+        }
+
+        .checkbox-label input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        /* Login Container */
+        .login-container {
+            position: relative;
+            z-index: 2;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 212, 255, 0.2);
+            animation: bounceIn 0.8s ease-out;
+        }
+
+        .auth-page-shell {
+            position: relative;
+            z-index: 2;
+        }
+
+        .form-input-login {
+            background: rgba(7, 20, 44, 0.88);
+            border-color: rgba(0, 212, 255, 0.35);
+        }
+
+        .form-input-login::placeholder {
+            color: #9fb1c5;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out 0.1s backwards;
+        }
+
+        .login-logo {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .login-title {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-subtitle {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body::before {
+                background-position: center center, 58% 18%, center center;
+            }
+
+            .login-container {
+                padding: 2rem;
+            }
+
+            .form-input-login {
+                padding: 0.9rem 1rem;
+            }
+
+            .login-button {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body::before {
+                background-position: center center, 62% 16%, center center;
+            }
+        }
+        
+    </style>
+    <!-- Change from <link rel="stylesheet" href="style.css"> to: -->
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="{{ url_for('main.home') }}" class="navbar-brand">
+            <i class="fas fa-leaf"></i> NutriDetect
+        </a>
+        <ul class="navbar-menu">
+            <li><a href="{{ url_for('main.home') }}">Home</a></li>
+            <li><a href="{{ url_for('main.features') }}">Features</a></li>
+            <li><a href="{{ url_for('main.about') }}">About</a></li>
+            <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
+            <li style="margin-left: auto;"><a href="{{ url_for('main.login_page') }}" style="color: var(--primary); font-weight: 600; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.color='var(--secondary)'" onmouseout="this.style.color='var(--primary)'">Login</a></li>
+            <li><a href="{{ url_for('main.register_page') }}" class="navbar-btn register-btn">Register</a></li>
+        </ul>
+    </nav>
+
+    <!-- Login Container -->
+    <div class="auth-page-shell" style="margin-top: 80px; min-height: calc(100vh - 80px); display: flex; align-items: center; justify-content: center; padding: 2rem;">
+        <div class="login-container nutri-panel">
+            
+            <!-- Logo -->
+            <div class="login-header">
+                <i class="fas fa-leaf login-logo"></i>
+                <h1 class="login-title">NutriDetect</h1>
+                <p class="login-subtitle">Sign In to Your Account</p>
+            </div>
+
+            <!-- Login Form -->
+            <form action="/login" method="POST">
+                <div class="form-group-login nutri-stagger">
+                    <label class="form-label-login">Email Address</label>
+                    <input type="email" name="email" class="form-input-login nutri-field" placeholder="you@example.com" required>
+                </div>
+
+                <div class="form-group-login nutri-stagger">
+                    <label class="form-label-login">Password</label>
+                    <input type="password" name="password" class="form-input-login nutri-field" placeholder="Enter your password" required>
+                </div>
+
+                <div class="nutri-stagger" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; font-size: 0.9rem; animation: fadeInUp 0.6s ease-out 0.4s backwards;">
+                    <label class="checkbox-label">
+                        <input type="checkbox">
+                        Remember me
+                    </label>
+                    <a href="{{ url_for('main.forgot_password') }}" class="auth-link">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="login-button nutri-submit nutri-stagger">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </button>
+            </form>
+
+            <!-- Divider -->
+            <div style="display: flex; align-items: center; margin-bottom: 1.5rem; margin-top: 1.5rem; animation: fadeInUp 0.6s ease-out 0.5s backwards;">
+                <div style="flex: 1; height: 1px; background: var(--border-color);"></div>
+                <span style="color: #808080; padding: 0 1rem; font-size: 0.9rem;">Or continue with</span>
+                <div style="flex: 1; height: 1px; background: var(--border-color);"></div>
+            </div>
+
+            <!-- Social Login -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
+                <a href="{{ url_for('main.google_login') }}" class="social-btn nutri-stagger" style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; text-decoration: none;">
+                    <i class="fab fa-google"></i> Google
+                </a>
+                <button type="button" class="social-btn nutri-stagger">
+                    <i class="fas fa-clock"></i> Coming Soon
+                </button>
+            </div>
+            <p style="text-align: center; color: #808080; font-size: 0.85rem; margin-bottom: 1.5rem;">
+                Google sign-in works after adding your Google OAuth client ID and secret in <code>google.env</code>.
+            </p>
+
+            <!-- Sign Up Link -->
+            <div style="text-align: center; padding-top: 1.5rem; border-top: 1px solid var(--border-color); color: #a0a0a0; animation: fadeInUp 0.6s ease-out 0.8s backwards;">
+                Don't have an account? 
+                <a href="{{ url_for('main.register_page') }}" class="auth-link">Sign up</a>
+            </div>
+        </div>
+    </div>
+
+   <script src="{{ url_for('static', filename='script.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+        {% if category == 'success' or category == 'danger' %}
+            showNutriAlert(
+                "{{ 'success' if category == 'success' else 'error' }}",
+                "{{ 'Success!' if category == 'success' else 'Error!' }}",
+                "{{ message }}"
+            );
+        {% endif %}
+    {% endfor %}
+{% endwith %}
+</script>
+</body>
+</html>

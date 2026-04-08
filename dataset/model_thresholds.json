@@ -1,0 +1,28 @@
+{
+  "human_threshold": 0.48,
+  "face_fallback_threshold": 0.15,
+  "malnutrition_threshold": 0.18,
+  "malnutrition_uncertain_margin": 0.12,
+  "calibration_summary": {
+    "human": {
+      "model_path": "human_model.keras",
+      "balanced_accuracy": 0.917,
+      "accuracy": 0.9081,
+      "tp": 98,
+      "tn": 70,
+      "fp": 3,
+      "fn": 14,
+      "samples": 185
+    },
+    "malnutrition": {
+      "model_path": "malnutrition_model.keras",
+      "balanced_accuracy": 0.95,
+      "accuracy": 0.95,
+      "tp": 9,
+      "tn": 10,
+      "fp": 0,
+      "fn": 1,
+      "samples": 20
+    }
+  }
+}

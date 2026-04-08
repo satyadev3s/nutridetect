@@ -1,0 +1,69 @@
+{
+  "models": {
+    "human_model": "human_model.keras",
+    "malnutrition_model": "malnutrition_model.keras"
+  },
+  "thresholds_used": {
+    "human_threshold": 0.48,
+    "face_fallback_threshold": 0.15,
+    "malnutrition_threshold": 0.18,
+    "malnutrition_uncertain_margin": 0.12,
+    "calibration_summary": {
+      "human": {
+        "model_path": "human_model.keras",
+        "balanced_accuracy": 0.917,
+        "accuracy": 0.9081,
+        "tp": 98,
+        "tn": 70,
+        "fp": 3,
+        "fn": 14,
+        "samples": 185
+      },
+      "malnutrition": {
+        "model_path": "malnutrition_model.keras",
+        "balanced_accuracy": 0.95,
+        "accuracy": 0.95,
+        "tp": 9,
+        "tn": 10,
+        "fp": 0,
+        "fn": 1,
+        "samples": 20
+      }
+    }
+  },
+  "human_detection": {
+    "confusion_matrix": {
+      "tp": 100,
+      "tn": 70,
+      "fp": 3,
+      "fn": 12
+    },
+    "metrics": {
+      "accuracy": 0.9189,
+      "precision": 0.9709,
+      "recall": 0.8929,
+      "f1": 0.9302,
+      "specificity": 0.9589,
+      "balanced_accuracy": 0.9259
+    },
+    "samples": 185
+  },
+  "malnutrition_detection": {
+    "confusion_matrix": {
+      "tp": 9,
+      "tn": 10,
+      "fp": 0,
+      "fn": 1
+    },
+    "metrics": {
+      "accuracy": 0.95,
+      "precision": 1.0,
+      "recall": 0.9,
+      "f1": 0.9474,
+      "specificity": 1.0,
+      "balanced_accuracy": 0.95
+    },
+    "samples": 20,
+    "uncertain_if_enabled_count": 6
+  }
+}

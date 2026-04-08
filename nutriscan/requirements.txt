@@ -1,0 +1,9 @@
+Flask
+Flask-Login
+Flask-Mail
+Flask-SQLAlchemy
+numpy<2
+opencv-python
+Pillow
+requests
+tensorflow==2.15.0
