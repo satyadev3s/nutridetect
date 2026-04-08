@@ -1,6 +1,7 @@
 import os
 import shutil
 import json
+import threading
 import uuid
 from datetime import datetime, timezone
 from urllib.parse import urlencode
@@ -567,6 +568,24 @@ def send_analysis_report_email(mail, user, analysis):
         return False, str(exc)
 
 
+def send_analysis_report_email_async(app, mail, user_id, analysis_id):
+    with app.app_context():
+        user = User.query.get(user_id)
+        analysis = Analysis.query.get(analysis_id)
+        if user is None or analysis is None:
+            app.logger.warning(
+                'Skipping async analysis email because user or analysis was not found. user_id=%s analysis_id=%s',
+                user_id,
+                analysis_id,
+            )
+            return
+        sent, error_message = send_analysis_report_email(mail, user, analysis)
+        if sent:
+            app.logger.info('Analysis report emailed successfully to %s', user.email)
+        else:
+            app.logger.warning('Analysis report email failed for %s: %s', user.email, error_message)
+
+
 def send_password_reset_email(mail, user, base_url=None):
     if not is_mail_configured():
         return False, 'Email is not configured yet.'
@@ -1001,11 +1020,13 @@ def predict():
         flash('Unable to save analysis history right now. Please try again.', 'danger')
         return redirect(url_for('main.dashboard'))
 
-    sent, error_message = send_analysis_report_email(mail, user, analysis)
-    if sent:
-        flash(f'Analysis completed and report sent to {user.email}.', 'success')
-    elif error_message:
-        flash(f'Analysis completed, but email was not sent to {user.email}: {error_message}', 'danger')
+    if is_mail_configured() and mail is not None:
+        threading.Thread(
+            target=send_analysis_report_email_async,
+            args=(current_app._get_current_object(), mail, user.id, analysis.id),
+            daemon=True,
+        ).start()
+        flash(f'Analysis completed successfully. Report email is being sent to {user.email}.', 'success')
     else:
         flash('Analysis completed successfully.', 'success')
     return redirect(url_for('main.analysis_report', analysis_id=analysis.id))
