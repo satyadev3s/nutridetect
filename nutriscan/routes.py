@@ -42,6 +42,23 @@ DEFAULT_THRESHOLDS = {
 }
 
 
+def format_mail_error(error_message):
+    if not error_message:
+        return 'Email delivery failed. Please try again later.'
+
+    normalized = str(error_message).lower()
+    if 'username and password not accepted' in normalized or 'badcredentials' in normalized:
+        return (
+            'Email login failed. Update MAIL_USERNAME and MAIL_PASSWORD with a valid Gmail app password, '
+            'then restart the app.'
+        )
+    if 'timed out' in normalized:
+        return 'Email delivery timed out. Please try again in a moment.'
+    if 'connection unexpectedly closed' in normalized:
+        return 'Email connection closed unexpectedly. Please try again.'
+    return str(error_message)
+
+
 def get_model():
     global model
     if model is None:
@@ -633,7 +650,8 @@ def ensure_app_storage():
 
 @bp.app_errorhandler(RequestEntityTooLarge)
 def handle_file_too_large(error):
-    flash('Image is too large. Please upload a file smaller than 16 MB.', 'danger')
+    limit_mb = int(current_app.config.get('MAX_CONTENT_LENGTH', 16 * 1024 * 1024) / (1024 * 1024))
+    flash(f'Image is too large. Please upload a file smaller than {limit_mb} MB.', 'danger')
     if current_user.is_authenticated:
         return redirect(url_for('main.dashboard'))
     return redirect(url_for('main.home'))
@@ -784,10 +802,10 @@ def forgot_password():
 
         sent, error_message = send_password_reset_email(mail, user, request.host_url.rstrip('/'))
         if sent:
-            flash(f'Password reset link sent to {user.email}. Keep this app running and open the link on this same computer.', 'success')
+            flash(f'Password reset link sent to {user.email}. Please check your inbox.', 'success')
             return redirect(url_for('main.login_page'))
 
-        flash(f'Unable to send reset email to {user.email}: {error_message}', 'danger')
+        flash(f'Unable to send reset email to {user.email}: {format_mail_error(error_message)}', 'danger')
         return redirect(url_for('main.forgot_password'))
 
     return render_template('forgot_password.html')
@@ -996,7 +1014,7 @@ def predict():
 
     model_load_warning = current_app.config.get('MODEL_LOAD_WARNING')
     if model_load_warning:
-        flash(model_load_warning, 'danger')
+        flash(model_load_warning, 'warning')
         current_app.config['MODEL_LOAD_WARNING'] = None
 
     analysis = Analysis(
@@ -1026,7 +1044,8 @@ def predict():
             flash(f'Analysis completed successfully. Report emailed to {user.email}.', 'success')
         else:
             flash(
-                f'Analysis completed successfully, but the report could not be emailed to {user.email}: {error_message}',
+                f'Analysis completed successfully, but the report could not be emailed to {user.email}: '
+                f'{format_mail_error(error_message)}',
                 'warning',
             )
     else:
@@ -1105,7 +1124,7 @@ def email_report(analysis_id):
     if sent:
         flash(f'Report emailed successfully to {user.email}.', 'success')
     else:
-        flash(f'Unable to send report to {user.email}: {error_message}', 'danger')
+        flash(f'Unable to send report to {user.email}: {format_mail_error(error_message)}', 'danger')
 
     next_page = request.form.get('next')
     if next_page == 'dashboard':
