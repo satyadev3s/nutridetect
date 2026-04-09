@@ -1021,12 +1021,14 @@ def predict():
         return redirect(url_for('main.dashboard'))
 
     if is_mail_configured() and mail is not None:
-        threading.Thread(
-            target=send_analysis_report_email_async,
-            args=(current_app._get_current_object(), mail, user.id, analysis.id),
-            daemon=True,
-        ).start()
-        flash(f'Analysis completed successfully. Report email is being sent to {user.email}.', 'success')
+        sent, error_message = send_analysis_report_email(mail, user, analysis)
+        if sent:
+            flash(f'Analysis completed successfully. Report emailed to {user.email}.', 'success')
+        else:
+            flash(
+                f'Analysis completed successfully, but the report could not be emailed to {user.email}: {error_message}',
+                'warning',
+            )
     else:
         flash('Analysis completed successfully.', 'success')
     return redirect(url_for('main.analysis_report', analysis_id=analysis.id))

@@ -3,6 +3,9 @@ import socket
 import traceback
 from datetime import timedelta, timezone
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
 def load_env_file(env_path):
     if not os.path.exists(env_path):
         return
@@ -18,8 +21,8 @@ def load_env_file(env_path):
             os.environ.setdefault(key, value)
 
 
-load_env_file('mail.env')
-load_env_file('google.env')
+load_env_file(os.path.join(BASE_DIR, 'mail.env'))
+load_env_file(os.path.join(BASE_DIR, 'google.env'))
 
 os.environ.setdefault('TF_CPP_MIN_LOG_LEVEL', '2')
 os.environ.setdefault('TF_ENABLE_ONEDNN_OPTS', '0')
@@ -127,6 +130,12 @@ db.init_app(app)
 login_manager.init_app(app)
 login_manager.login_view = 'main.login_page'
 mail = Mail(app)
+
+if not (app.config['MAIL_USERNAME'] and app.config['MAIL_PASSWORD']):
+    app.logger.warning(
+        'Mail is not configured. Set MAIL_USERNAME and MAIL_PASSWORD in the environment or %s.',
+        os.path.join(BASE_DIR, 'mail.env'),
+    )
 
 import routes  # noqa: E402,F401
 routes.mail = mail
