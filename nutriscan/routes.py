@@ -137,6 +137,8 @@ def get_human_model():
 
 
 def predict_human_probability(loaded_human_model, img_array):
+    img_array = np.asarray(img_array, dtype=np.float32)
+
     if hasattr(loaded_human_model, 'predict'):
         raw_output = loaded_human_model.predict(img_array, verbose=0)
         return safe_probability(np.asarray(raw_output).reshape(-1)[0])
