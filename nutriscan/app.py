@@ -91,11 +91,15 @@ def resolve_model_search_paths(*filenames):
     candidate_paths = []
     for directory in [app.root_path, local_dataset_dir, sibling_dataset_dir]:
         for filename in filenames:
-            candidate_paths.append(os.path.join(directory, filename))
+                candidate_paths.append(os.path.join(directory, filename))
     return candidate_paths
 
 candidate_malnutrition_model_paths = resolve_model_search_paths('malnutrition_model.keras', 'malnutrition_model.h5')
-candidate_human_model_paths = resolve_model_search_paths('human_model.keras', 'human_model.h5')
+candidate_human_model_paths = resolve_model_search_paths(
+    'human_model.keras',
+    'human_model.h5',
+    'human_model_savedmodel',
+)
 app.config['MALNUTRITION_MODEL_CANDIDATE_PATHS'] = candidate_malnutrition_model_paths
 app.config['MALNUTRITION_MODEL_PATH'] = next(
     (p for p in candidate_malnutrition_model_paths if os.path.exists(p)),

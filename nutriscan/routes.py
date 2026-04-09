@@ -107,9 +107,13 @@ def get_human_model():
                 continue
             try:
                 human_model = tf.keras.models.load_model(model_path, compile=False)
-                current_app.logger.info('Loaded human model from %s', model_path)
+                current_app.logger.info(
+                    'Loaded human model from %s using %s',
+                    model_path,
+                    type(human_model).__name__,
+                )
                 current_app.config['HUMAN_MODEL_PATH'] = model_path
-                if model_path != requested_model_path:
+                if model_path != requested_model_path and os.path.basename(model_path) != 'human_model_savedmodel':
                     warning = (
                         f'Primary human-detection model could not be loaded, so NutriDetect used the fallback model '
                         f'"{os.path.basename(model_path)}".'
@@ -130,6 +134,20 @@ def get_human_model():
             current_app.logger.warning('Human model load failed: %s', ' | '.join(load_errors))
             human_model = False
     return human_model
+
+
+def predict_human_probability(loaded_human_model, img_array):
+    if hasattr(loaded_human_model, 'predict'):
+        raw_output = loaded_human_model.predict(img_array, verbose=0)
+        return safe_probability(np.asarray(raw_output).reshape(-1)[0])
+
+    serving_fn = getattr(loaded_human_model, 'signatures', {}).get('serving_default')
+    if serving_fn is None:
+        raise TypeError('Human model does not expose a predict method or serving_default signature.')
+
+    output_map = serving_fn(tf.constant(img_array))
+    first_tensor = next(iter(output_map.values()))
+    return safe_probability(np.asarray(first_tensor).reshape(-1)[0])
 
 
 def load_json_file(candidate_paths, default):
@@ -970,7 +988,7 @@ def predict():
         human_probability = 1.0 if face_count > 0 else 0.0
         is_human = face_count > 0
     else:
-        human_probability = safe_probability(loaded_human_model.predict(img_array, verbose=0)[0][0])
+        human_probability = predict_human_probability(loaded_human_model, img_array)
         is_human = human_probability >= float(thresholds['human_threshold']) or (
             face_count > 0 and human_probability >= float(thresholds['face_fallback_threshold'])
         )
