@@ -105,6 +105,11 @@ def create_app():
 
 app = create_app()
 
+# Lightweight uptime probe for Render/other platforms.
+@app.get('/healthz')
+def healthz():
+    return 'ok', 200
+
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', '5002'))
