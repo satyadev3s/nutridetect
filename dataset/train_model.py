@@ -19,14 +19,14 @@ train_gen = ImageDataGenerator(
 test_gen = ImageDataGenerator(rescale=1.0 / 255)
 
 train_data = train_gen.flow_from_directory(
-    'dataset/train',
+    'human_dataset/train',
     target_size=(224, 224),
     class_mode='binary',
     batch_size=32,
 )
 
 test_data = test_gen.flow_from_directory(
-    'dataset/test',
+    'human_dataset/test',
     target_size=(224, 224),
     class_mode='binary',
     batch_size=32,

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -285,6 +285,8 @@
     </style>
     <!-- Change from <link rel="stylesheet" href="style.css"> to: -->
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+{% include '_translate_head.html' %}
 </head>
 <body>
     <!-- Navbar -->
@@ -382,5 +384,8 @@
     {% endfor %}
 {% endwith %}
 </script>
+
+{% include '_translate_script.html' %}
 </body>
 </html>
+

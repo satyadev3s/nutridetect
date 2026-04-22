@@ -3,3 +3,7 @@ __pycache__/
 *.pyc
 *.db
 *.log
+.env
+mail.env
+instance/
+static/uploads/

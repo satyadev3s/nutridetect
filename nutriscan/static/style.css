@@ -5,19 +5,27 @@
 }
 
 :root {
-    --primary: #00d4ff;
-    --secondary: #0088ff;
-    --accent: #ff006e;
-    --dark-bg: #0a0e27;
-    --card-bg: rgba(255, 255, 255, 0.05);
-    --border-color: rgba(0, 212, 255, 0.2);
+    --primary: #2fa8a4;
+    --secondary: #3f7fc4;
+    --accent: #22c55e;
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --primary-rgb: 47, 168, 164;
+    --secondary-rgb: 63, 127, 196;
+    --success-rgb: 34, 197, 94;
+    --warning-rgb: 245, 158, 11;
+    --danger-rgb: 239, 68, 68;
+    --dark-bg: #09121f;
+    --card-bg: rgba(255, 255, 255, 0.06);
+    --border-color: rgba(47, 168, 164, 0.24);
     --bg-image-position: 50% 22%;
     --bg-image-size: cover;
 }
 
 body {
-    background: linear-gradient(135deg, #0a0e27 0%, #16213e 50%, #0f3460 100%);
-    color: #e0e0e0;
+    background: linear-gradient(140deg, #09121f 0%, #0f1f33 52%, #102942 100%);
+    color: #e6eef3;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     overflow-x: hidden;
     min-height: 100vh;
@@ -32,10 +40,10 @@ body::before {
     width: 100%;
     height: 100%;
     background-image:
-        linear-gradient(135deg, rgba(6, 12, 29, 0.82), rgba(10, 36, 68, 0.76)),
+        linear-gradient(135deg, rgba(8, 18, 30, 0.86), rgba(13, 39, 65, 0.8)),
         url('/static/bgimg.png'),
-        radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.05), transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(0, 136, 255, 0.05), transparent 50%);
+        radial-gradient(circle at 20% 50%, rgba(var(--primary-rgb), 0.07), transparent 52%),
+        radial-gradient(circle at 80% 80%, rgba(var(--secondary-rgb), 0.07), transparent 52%);
     background-size: cover, var(--bg-image-size), auto, auto;
     background-position: center center, var(--bg-image-position), center, center;
     background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
@@ -52,7 +60,7 @@ body::after {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><filter id="blur"><feGaussianBlur in="SourceGraphic" stdDeviation="2"/></filter></defs><g opacity="0.03" filter="url(%23blur)"><path d="M 100 400 Q 300 200 500 400 T 900 400" stroke="rgba(0,212,255,0.5)" stroke-width="2" fill="none"/><circle cx="100" cy="400" r="20" fill="rgba(0,212,255,0.3)"/><circle cx="500" cy="200" r="30" fill="rgba(0,212,255,0.3)"/><circle cx="900" cy="400" r="20" fill="rgba(0,212,255,0.3)"/></g></svg>');
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><filter id="blur"><feGaussianBlur in="SourceGraphic" stdDeviation="2"/></filter></defs><g opacity="0.03" filter="url(%23blur)"><path d="M 100 400 Q 300 200 500 400 T 900 400" stroke="rgba(47,168,164,0.5)" stroke-width="2" fill="none"/><circle cx="100" cy="400" r="20" fill="rgba(47,168,164,0.3)"/><circle cx="500" cy="200" r="30" fill="rgba(47,168,164,0.3)"/><circle cx="900" cy="400" r="20" fill="rgba(47,168,164,0.3)"/></g></svg>');
     background-attachment: fixed;
     pointer-events: none;
     z-index: 0;
@@ -61,9 +69,9 @@ body::after {
 
 body.no-bg-image::before {
     background-image:
-        linear-gradient(135deg, rgba(6, 12, 29, 0.94), rgba(10, 36, 68, 0.9)),
-        radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.05), transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(0, 136, 255, 0.05), transparent 50%);
+        linear-gradient(135deg, rgba(8, 18, 30, 0.96), rgba(13, 39, 65, 0.92)),
+        radial-gradient(circle at 20% 50%, rgba(var(--primary-rgb), 0.08), transparent 52%),
+        radial-gradient(circle at 80% 80%, rgba(var(--secondary-rgb), 0.08), transparent 52%);
     background-size: cover, auto, auto;
     background-position: center center, center, center;
     background-repeat: no-repeat, no-repeat, no-repeat;
@@ -173,7 +181,7 @@ main {
 
 .navbar-menu a:hover {
     color: var(--primary);
-    background: rgba(0, 212, 255, 0.1);
+    background: rgba(var(--primary-rgb), 0.14);
 }
 
 .navbar-btn {
@@ -191,7 +199,7 @@ main {
     background: var(--primary) !important;
     color: var(--dark-bg) !important;
     transform: translateY(-2px) !important;
-    box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3) !important;
+    box-shadow: 0 8px 25px rgba(var(--primary-rgb), 0.28) !important;
 }
 
 .navbar-btn:active {
@@ -212,7 +220,7 @@ main {
 }
 
 .register-btn:hover {
-    box-shadow: 0 8px 35px rgba(0, 212, 255, 0.5) !important;
+    box-shadow: 0 8px 35px rgba(var(--primary-rgb), 0.42) !important;
 }
 
 /* Hero Section */
@@ -280,13 +288,13 @@ main {
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+    box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.3);
     letter-spacing: 1px;
 }
 
 .cta-button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 50px rgba(0, 212, 255, 0.5);
+    box-shadow: 0 10px 50px rgba(var(--primary-rgb), 0.5);
 }
 
 .cta-button:active {
@@ -307,7 +315,7 @@ main {
 .floating-orb {
     position: absolute;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(0, 212, 255, 0.3) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(var(--primary-rgb), 0.3) 0%, transparent 70%);
     filter: blur(40px);
     animation: float 8s ease-in-out infinite;
 }
@@ -325,7 +333,7 @@ main {
     height: 200px;
     bottom: -50px;
     left: 10%;
-    background: radial-gradient(circle, rgba(0, 136, 255, 0.3) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(var(--secondary-rgb), 0.3) 0%, transparent 70%);
     animation-delay: 2s;
 }
 
@@ -421,7 +429,7 @@ main {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(var(--primary-rgb), 0.2), transparent);
     transition: left 0.5s ease;
     z-index: -1;
 }
@@ -433,8 +441,8 @@ main {
 .feature-card:hover {
     transform: translateY(-10px);
     border-color: var(--primary);
-    box-shadow: 0 20px 60px rgba(0, 212, 255, 0.2), inset 0 0 30px rgba(0, 212, 255, 0.1);
-    background: rgba(0, 212, 255, 0.05);
+    box-shadow: 0 20px 60px rgba(var(--primary-rgb), 0.2), inset 0 0 30px rgba(var(--primary-rgb), 0.1);
+    background: rgba(var(--primary-rgb), 0.05);
 }
 
 .feature-card:active {
@@ -472,13 +480,13 @@ main {
     font-size: 1rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+    box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.3);
     letter-spacing: 1px;
 }
 
 .analyze-button:hover:not(:disabled) {
     transform: translateY(-3px);
-    box-shadow: 0 10px 50px rgba(0, 212, 255, 0.5);
+    box-shadow: 0 10px 50px rgba(var(--primary-rgb), 0.5);
 }
 
 .analyze-button:active:not(:disabled) {
@@ -506,7 +514,7 @@ main {
     background: var(--primary);
     color: var(--dark-bg);
     transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+    box-shadow: 0 10px 30px rgba(var(--primary-rgb), 0.3);
 }
 
 .clear-button:active {
@@ -577,7 +585,7 @@ footer {
     background: var(--primary);
     color: var(--dark-bg);
     transform: translateY(-5px) scale(1.1);
-    box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+    box-shadow: 0 10px 30px rgba(var(--primary-rgb), 0.3);
 }
 
 .social-icon:active {
@@ -596,7 +604,7 @@ footer {
 .spinner {
     width: 50px;
     height: 50px;
-    border: 3px solid rgba(0, 212, 255, 0.2);
+    border: 3px solid rgba(var(--primary-rgb), 0.2);
     border-top: 3px solid var(--primary);
     border-radius: 50%;
     animation: spin 1s linear infinite;
@@ -777,12 +785,12 @@ footer {
 /* SweetAlert Theme */
 .swal2-popup.nutri-alert-popup {
     background:
-        radial-gradient(circle at top, rgba(0, 212, 255, 0.16), transparent 45%),
-        linear-gradient(145deg, rgba(10, 14, 39, 0.98), rgba(15, 52, 96, 0.95));
-    border: 1px solid rgba(0, 212, 255, 0.28);
+        radial-gradient(circle at top, rgba(var(--primary-rgb), 0.16), transparent 45%),
+        linear-gradient(145deg, rgba(9, 18, 31, 0.98), rgba(15, 41, 63, 0.95));
+    border: 1px solid rgba(var(--primary-rgb), 0.3);
     border-radius: 24px;
     color: #e8f7ff;
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45), 0 0 40px rgba(0, 212, 255, 0.14);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45), 0 0 40px rgba(var(--primary-rgb), 0.16);
     backdrop-filter: blur(18px);
     padding: 1.8rem;
 }
@@ -803,16 +811,16 @@ footer {
 .swal2-confirm.nutri-alert-confirm {
     border-radius: 999px !important;
     font-weight: 800 !important;
-    box-shadow: 0 16px 35px rgba(0, 212, 255, 0.28) !important;
+    box-shadow: 0 16px 35px rgba(var(--primary-rgb), 0.3) !important;
     cursor: pointer !important;
 }
 
 .swal2-icon.swal2-success {
-    border-color: rgba(74, 222, 128, 0.6) !important;
+    border-color: rgba(var(--success-rgb), 0.7) !important;
 }
 
 .swal2-icon.swal2-error {
-    border-color: rgba(255, 107, 107, 0.6) !important;
+    border-color: rgba(var(--danger-rgb), 0.68) !important;
 }
 
 .swal2-container {
@@ -847,7 +855,7 @@ footer {
 
 .nutri-field:focus {
     transform: translateY(-3px) scale(1.01);
-    box-shadow: 0 14px 28px rgba(0, 212, 255, 0.16), 0 0 0 4px rgba(0, 212, 255, 0.08);
+    box-shadow: 0 14px 28px rgba(var(--primary-rgb), 0.18), 0 0 0 4px rgba(var(--primary-rgb), 0.1);
 }
 
 .nutri-submit {
@@ -856,7 +864,7 @@ footer {
 
 .nutri-submit:hover {
     transform: translateY(-3px) scale(1.01);
-    box-shadow: 0 16px 36px rgba(0, 212, 255, 0.24);
+    box-shadow: 0 16px 36px rgba(var(--primary-rgb), 0.24);
     filter: saturate(1.08);
 }
 
@@ -932,3 +940,4 @@ footer {
         transform: translateY(14px) scale(0.96);
     }
 }
+

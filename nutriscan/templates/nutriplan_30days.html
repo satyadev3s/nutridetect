@@ -1,0 +1,736 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriPlan for 30 Days - NutriDetect</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .page-wrap {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2.25rem 1.2rem 2.8rem;
+        }
+
+        .hero-card {
+            background: linear-gradient(160deg, rgba(17, 25, 38, 0.94), rgba(16, 23, 35, 0.88));
+            border: 1px solid rgba(125, 211, 252, 0.22);
+            border-radius: 20px;
+            padding: 1.4rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 18px 46px rgba(0, 0, 0, 0.24);
+            backdrop-filter: blur(6px);
+        }
+
+        .hero-title {
+            color: #b7f1ff;
+            font-size: 1.9rem;
+            font-weight: 900;
+            letter-spacing: 0.3px;
+        }
+
+        .meta-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .meta-pill {
+            border: 1px solid rgba(74, 222, 128, 0.26);
+            border-radius: 12px;
+            background: rgba(22, 163, 74, 0.11);
+            color: #e9ffe9;
+            padding: 0.85rem 1rem;
+            font-size: 0.9rem;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+        }
+
+        .meta-pill:hover {
+            transform: translateY(-2px);
+            border-color: rgba(125, 211, 252, 0.5);
+            box-shadow: 0 10px 22px rgba(0, 212, 255, 0.12);
+        }
+
+        .plan-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1.4rem;
+            margin-top: 1.2rem;
+        }
+
+        .day-card {
+            background: linear-gradient(170deg, rgba(24, 35, 50, 0.96), rgba(18, 28, 42, 0.9));
+            border: 1px solid rgba(125, 211, 252, 0.2);
+            border-left: 5px solid var(--primary);
+            border-radius: 16px;
+            padding: 1rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .day-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -130%;
+            width: 62%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(125, 211, 252, 0.22), transparent);
+            transform: skewX(-20deg);
+            pointer-events: none;
+            transition: left 0.45s ease;
+        }
+
+        .day-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(125, 211, 252, 0.42);
+            box-shadow: 0 14px 30px rgba(0, 212, 255, 0.12);
+        }
+
+        .day-card:hover::before {
+            left: 155%;
+        }
+
+        .day-label {
+            font-size: 1rem;
+            font-weight: 900;
+            color: #b7f1ff;
+            margin-bottom: 0.35rem;
+        }
+
+        .day-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .value-chip {
+            border-radius: 999px;
+            padding: 0.24rem 0.6rem;
+            font-size: 0.76rem;
+            font-weight: 800;
+            background: rgba(34, 197, 94, 0.16);
+            border: 1px solid rgba(34, 197, 94, 0.42);
+            color: #e4ffe4;
+            white-space: nowrap;
+        }
+
+        .day-phase {
+            display: inline-block;
+            margin-bottom: 0.7rem;
+            padding: 0.25rem 0.6rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+            border-radius: 999px;
+            background: rgba(0, 212, 255, 0.12);
+            border: 1px solid rgba(0, 212, 255, 0.35);
+            color: #bdefff;
+        }
+
+        .meal-row {
+            font-size: 0.91rem;
+            color: #deebf3;
+            margin-bottom: 0.55rem;
+            line-height: 1.42;
+            background: rgba(15, 23, 33, 0.52);
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            border-radius: 10px;
+            padding: 0.52rem 0.6rem;
+            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .day-card:hover .meal-row {
+            transform: translateX(2px);
+            border-color: rgba(125, 211, 252, 0.34);
+            background: rgba(15, 23, 33, 0.66);
+        }
+
+        .meal-row strong {
+            color: #8ddcff;
+        }
+
+        .nutrition-tracker {
+            background: rgba(21, 128, 61, 0.15);
+            border: 1px solid rgba(74, 222, 128, 0.25);
+            border-radius: 14px;
+            padding: 0.95rem 1rem;
+            margin-top: 1rem;
+            color: #e2ffe9;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 0.6rem;
+        }
+
+        .tracker-item {
+            border: 1px solid rgba(74, 222, 128, 0.18);
+            background: rgba(18, 36, 26, 0.62);
+            border-radius: 12px;
+            padding: 0.68rem 0.72rem;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+        }
+
+        .tracker-item:hover {
+            transform: translateY(-2px);
+            border-color: rgba(125, 211, 252, 0.42);
+            box-shadow: 0 8px 20px rgba(0, 212, 255, 0.12);
+        }
+
+        .tracker-label {
+            display: block;
+            font-size: 0.8rem;
+            color: #b8e7c4;
+            margin-bottom: 0.22rem;
+        }
+
+        .tracker-value {
+            display: block;
+            font-size: 1.16rem;
+            font-weight: 800;
+            color: #deffe8;
+        }
+
+        .unlock-note {
+            margin-top: 0.7rem;
+            font-size: 0.84rem;
+            color: #b6dfc3;
+        }
+
+        .done-banner {
+            display: none;
+            margin-top: 0.9rem;
+            border: 1px solid rgba(34, 197, 94, 0.45);
+            background: rgba(34, 197, 94, 0.14);
+            color: #ddffe8;
+            padding: 0.8rem 0.95rem;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+
+        .done-banner.show {
+            display: block;
+        }
+
+        .complete-button {
+            margin-top: 0.5rem;
+            width: 100%;
+            padding: 0.65rem 0.8rem;
+            border-radius: 9px;
+            border: 1px solid rgba(34, 197, 94, 0.45);
+            background: rgba(34, 197, 94, 0.16);
+            color: #dfffe8;
+            font-weight: 700;
+            font-size: 0.86rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .complete-button:hover {
+            background: rgba(34, 197, 94, 0.24);
+            transform: translateY(-1px);
+        }
+
+        .day-card.completed {
+            border-color: rgba(34, 197, 94, 0.45);
+            box-shadow: inset 0 0 0 1px rgba(34, 197, 94, 0.22);
+        }
+
+        .day-card.completed .value-chip {
+            background: rgba(34, 197, 94, 0.24);
+            border-color: rgba(34, 197, 94, 0.6);
+            color: #dfffe8;
+        }
+
+        .actions {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .planner-form {
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 0.8rem;
+            align-items: end;
+        }
+        .planner-form label {
+            display: block;
+            font-size: 0.82rem;
+            color: #9ed9f3;
+            margin-bottom: 0.3rem;
+            font-weight: 700;
+        }
+        .planner-form select {
+            width: 100%;
+            background: rgba(12, 22, 33, 0.9);
+            color: #e5f7ff;
+            border: 1px solid rgba(125, 211, 252, 0.35);
+            border-radius: 10px;
+            padding: 0.55rem 0.6rem;
+        }
+        .planner-form button {
+            border-radius: 10px;
+            border: 1px solid rgba(74, 222, 128, 0.4);
+            background: rgba(34, 197, 94, 0.16);
+            color: #ddffe8;
+            font-weight: 800;
+            padding: 0.62rem 0.85rem;
+        }
+        .shopping-grid {
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 0.85rem;
+        }
+        .shopping-card {
+            background: rgba(15, 27, 41, 0.78);
+            border: 1px solid rgba(125, 211, 252, 0.25);
+            border-radius: 12px;
+            padding: 0.8rem;
+        }
+        .shopping-card h4 {
+            color: #9bddff;
+            font-weight: 800;
+            margin-bottom: 0.55rem;
+        }
+        .shopping-card li {
+            color: #d3e8f3;
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .action-button {
+            padding: 0.9rem 1.3rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1px solid transparent;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .action-button:hover {
+            transform: translateY(-1px);
+        }
+
+        .action-button.primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--dark-bg);
+        }
+
+        .action-button.secondary {
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            background: transparent;
+        }
+
+        .action-button.ghost {
+            border: 1px dashed #7dd3fc;
+            color: #9bddff;
+            background: rgba(0, 212, 255, 0.08);
+        }
+
+        .plan-severe .day-card {
+            border-left-color: #ef4444;
+            background: linear-gradient(145deg, rgba(239, 68, 68, 0.12), rgba(19, 28, 37, 0.92));
+        }
+
+        .plan-moderate .day-card {
+            border-left-color: #f59e0b;
+            background: linear-gradient(145deg, rgba(245, 158, 11, 0.11), rgba(19, 28, 37, 0.92));
+        }
+
+        .plan-mild .day-card {
+            border-left-color: #eab308;
+            background: linear-gradient(145deg, rgba(234, 179, 8, 0.1), rgba(19, 28, 37, 0.92));
+        }
+
+        .plan-recovery .day-card {
+            border-left-color: #22c55e;
+            background: linear-gradient(145deg, rgba(34, 197, 94, 0.11), rgba(19, 28, 37, 0.92));
+        }
+
+        .plan-general .day-card {
+            border-left-color: #38bdf8;
+            background: linear-gradient(145deg, rgba(56, 189, 248, 0.11), rgba(19, 28, 37, 0.92));
+        }
+
+        @media (max-width: 1100px) {
+            .plan-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-wrap {
+                padding: 1.05rem 0.8rem 1.8rem;
+            }
+
+            .hero-title {
+                font-size: 1.48rem;
+            }
+
+            .meta-row {
+                grid-template-columns: 1fr;
+            }
+
+            .plan-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media print {
+            .navbar,
+            .actions,
+            .complete-button {
+                display: none !important;
+            }
+
+            body,
+            .hero-card,
+            .day-card {
+                background: #ffffff !important;
+                color: #111111 !important;
+                border-color: #d1d5db !important;
+                box-shadow: none !important;
+            }
+
+            .hero-title,
+            .day-label,
+            .meal-row strong {
+                color: #0f172a !important;
+            }
+
+            .tracker-value,
+            .tracker-label {
+                color: #0f172a !important;
+            }
+
+            .meal-row,
+            .meta-pill,
+            .hero-card p {
+                color: #1f2937 !important;
+            }
+
+            .page-wrap {
+                max-width: 100% !important;
+                padding: 0 !important;
+            }
+
+            .day-card {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+
+{% include '_translate_head.html' %}
+</head>
+<body>
+    <nav class="navbar">
+        <a href="{{ url_for('main.home') }}" class="navbar-brand">
+            <i class="fas fa-leaf"></i> NutriDetect
+        </a>
+        <ul class="navbar-menu">
+            <li>
+                <a href="{{ url_for('main.analysis_report', analysis_id=analysis_id) }}" class="navbar-btn">
+                    <i class="fas fa-arrow-left"></i> Back to Result
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <main style="margin-top: 90px;">
+        <div class="page-wrap">
+            <section class="hero-card">
+                <h1 class="hero-title">30-Day Diet Plan for Malnutrition Patients</h1>
+                <div class="meta-row">
+                    <div class="meta-pill"><strong>Analysis Result:</strong> {{ result }}</div>
+                    <div class="meta-pill"><strong>Nutritional Status:</strong> {{ nutritional_status }}</div>
+                    <div class="meta-pill"><strong>Risk Level:</strong> {{ risk_level }}</div>
+                    <div class="meta-pill"><strong>Plan Type:</strong> {{ level_title }}</div>
+                </div>
+                <p style="color: #a7cde0; margin-top: 0.8rem;">{{ level_note }}</p>
+
+                <form method="get" action="{{ url_for('main.nutriplan_30days', analysis_id=analysis_id) }}" class="planner-form">
+                    <input type="hidden" name="generate" value="1">
+                    <div>
+                        <label for="diet_type">Diet Type</label>
+                        <select id="diet_type" name="diet_type">
+                            <option value="veg" {% if preferences.diet_type == 'veg' %}selected{% endif %}>Vegetarian</option>
+                            <option value="non_veg" {% if preferences.diet_type == 'non_veg' %}selected{% endif %}>Non-Vegetarian</option>
+                            <option value="mixed" {% if preferences.diet_type == 'mixed' %}selected{% endif %}>Mixed</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="budget">Budget Level</label>
+                        <select id="budget" name="budget">
+                            <option value="low" {% if preferences.budget == 'low' %}selected{% endif %}>Low Budget</option>
+                            <option value="medium" {% if preferences.budget == 'medium' %}selected{% endif %}>Medium Budget</option>
+                            <option value="high" {% if preferences.budget == 'high' %}selected{% endif %}>High Budget</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="cuisine">Food Preference</label>
+                        <select id="cuisine" name="cuisine">
+                            <option value="south_indian" {% if preferences.cuisine == 'south_indian' %}selected{% endif %}>South Indian</option>
+                            <option value="north_indian" {% if preferences.cuisine == 'north_indian' %}selected{% endif %}>North Indian</option>
+                            <option value="odisha" {% if preferences.cuisine == 'odisha' %}selected{% endif %}>Odisha Style</option>
+                        </select>
+                    </div>
+                    <div>
+                        <button type="submit">
+                            <i class="fas fa-sliders"></i> {% if plan_requested %}Regenerate Plan{% else %}Generate Plan{% endif %}
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            {% if not plan_requested %}
+            <section class="hero-card">
+                <p style="color: #c6e8f7; font-size: 0.95rem; margin: 0;">
+                    Choose your preferences above and click <strong>Regenerate Plan</strong> to open your 30-day diet plan.
+                </p>
+            </section>
+            {% endif %}
+
+            {% if plan_requested %}
+            <section class="hero-card plan-{{ level }}">
+                <h2 style="color: var(--primary); font-weight: 800; font-size: 1.2rem;">NutriPlan for 30 Days</h2>
+                <div class="nutrition-tracker">
+                    <div class="tracker-item">
+                        <span class="tracker-label">Unlocked Nutrition Value</span>
+                        <span class="tracker-value" id="unlockedNutritionValue">0</span>
+                    </div>
+                    <div class="tracker-item">
+                        <span class="tracker-label">Progress</span>
+                        <span class="tracker-value" id="progressPercent">0%</span>
+                    </div>
+                    <div class="tracker-item">
+                        <span class="tracker-label">Completed Days</span>
+                        <span class="tracker-value"><span id="completedDayCount">0</span> / {{ plan_days|length }}</span>
+                    </div>
+                </div>
+                <div class="unlock-note">Nutrition value is revealed only after you click <strong>Task Completed</strong>.</div>
+                <div id="allCompletedBanner" class="done-banner">
+                    All day tasks are completed. Great consistency.
+                </div>
+
+                <h3 style="margin-top: 1rem; color: #9bddff; font-size: 1.02rem; font-weight: 800;">Weekly Shopping List</h3>
+                <div class="shopping-grid">
+                    {% for week_label, items in shopping_by_week.items() %}
+                    <div class="shopping-card">
+                        <h4>{{ week_label }}</h4>
+                        <ul>
+                            {% for item in items %}
+                            <li><i class="fas fa-basket-shopping" style="margin-right: 0.35rem; color: #7dd3fc;"></i>{{ item }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="plan-grid">
+                    {% for day in plan_days %}
+                    <article class="day-card nutri-stagger" id="day-card-{{ day.day }}" data-day="{{ day.day }}" data-nutrition-value="{{ day.nutrition_value }}">
+                        <div class="day-top">
+                            <div class="day-label">Day {{ day.day }}</div>
+                            <div class="value-chip">Unlock On Complete</div>
+                        </div>
+                        <div class="day-phase">
+                            {% if day.day <= 7 %}
+                            Week 1 Foundation
+                            {% elif day.day <= 14 %}
+                            Week 2 Build-Up
+                            {% elif day.day <= 21 %}
+                            Week 3 High Protein
+                            {% else %}
+                            Week 4 Recovery
+                            {% endif %}
+                        </div>
+                        <div class="meal-row"><strong>Morning:</strong> {{ day.morning }}</div>
+                        <div class="meal-row"><strong>Evening:</strong> {{ day.evening }}</div>
+                        <div class="meal-row"><strong>Night:</strong> {{ day.night }}</div>
+                        <button type="button" class="complete-button" data-complete-day="{{ day.day }}">
+                            <i class="fas fa-check-circle"></i> Task Completed
+                        </button>
+                    </article>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+
+            <div class="actions">
+                <button type="button" onclick="window.print()" class="action-button ghost">
+                    <i class="fas fa-file-pdf"></i> Download PDF
+                </button>
+                <a href="{{ url_for('main.analysis_report', analysis_id=analysis_id) }}" class="action-button primary">
+                    <i class="fas fa-arrow-left"></i> Back to Result
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        (function () {
+            const analysisId = "{{ analysis_id }}";
+            const legacyStorageKey = `nutriplan_completed_days_${analysisId}`;
+            const storageKey = `nutriplan_completed_days_v2_${analysisId}`;
+            const cards = Array.from(document.querySelectorAll('.day-card[data-day]'));
+            const completeButtons = Array.from(document.querySelectorAll('.complete-button[data-complete-day]'));
+            const unlockedEl = document.getElementById('unlockedNutritionValue');
+            const progressEl = document.getElementById('progressPercent');
+            const countEl = document.getElementById('completedDayCount');
+            const bannerEl = document.getElementById('allCompletedBanner');
+            const validDays = new Set(cards.map((card) => Number(card.dataset.day || 0)));
+
+            if (!cards.length || !unlockedEl || !progressEl || !countEl || !bannerEl) {
+                return;
+            }
+
+            const totalNutritionValue = cards.reduce((sum, card) => {
+                const value = Number(card.dataset.nutritionValue || 0);
+                return sum + value;
+            }, 0);
+
+            // Clean old saved state from previous UI versions that hid completed cards.
+            localStorage.removeItem(legacyStorageKey);
+
+            function readCompletedDays() {
+                try {
+                    const raw = localStorage.getItem(storageKey);
+                    const parsed = raw ? JSON.parse(raw) : [];
+                    if (!Array.isArray(parsed)) {
+                        return new Set();
+                    }
+                    const sanitized = parsed
+                        .map((item) => Number(item))
+                        .filter((day) => validDays.has(day));
+                    const contiguous = [];
+                    const unique = new Set(sanitized);
+                    for (let day = 1; day <= cards.length; day += 1) {
+                        if (!unique.has(day)) {
+                            break;
+                        }
+                        contiguous.push(day);
+                    }
+                    return new Set(contiguous);
+                } catch (error) {
+                    return new Set();
+                }
+            }
+
+            function saveCompletedDays(daySet) {
+                localStorage.setItem(storageKey, JSON.stringify(Array.from(daySet)));
+            }
+
+            function applyVisibility(daySet) {
+                cards.forEach((card) => {
+                    const day = Number(card.dataset.day || 0);
+                    const button = card.querySelector('.complete-button[data-complete-day]');
+                    // Safety cleanup in case an older UI version left hidden-state classes/styles.
+                    card.classList.remove('completed-hidden');
+                    card.style.removeProperty('display');
+                    if (daySet.has(day)) {
+                        card.classList.add('completed');
+                        if (button) {
+                            button.disabled = true;
+                            button.innerHTML = '<i class="fas fa-circle-check"></i> Completed';
+                            button.style.opacity = '0.7';
+                            button.style.cursor = 'not-allowed';
+                        }
+                    } else {
+                        card.classList.remove('completed');
+                        if (button) {
+                            button.disabled = false;
+                            button.innerHTML = '<i class="fas fa-check-circle"></i> Task Completed';
+                            button.style.opacity = '1';
+                            button.style.cursor = 'pointer';
+                        }
+                    }
+                });
+            }
+
+            function getNextPendingDay(daySet) {
+                for (let day = 1; day <= cards.length; day += 1) {
+                    if (!daySet.has(day)) {
+                        return day;
+                    }
+                }
+                return cards.length + 1;
+            }
+
+            function showOrderPopup(requiredDay) {
+                if (typeof window.Swal !== 'undefined') {
+                    window.Swal.fire({
+                        icon: 'warning',
+                        title: 'Complete In Order',
+                        text: `Please complete Day ${requiredDay} before this day.`,
+                        confirmButtonText: 'OK'
+                    });
+                    return;
+                }
+                alert(`Please complete Day ${requiredDay} before this day.`);
+            }
+
+            function updateNutritionValues(daySet, lastUnlockedDay) {
+                let unlockedValue = 0;
+                cards.forEach((card) => {
+                    const day = Number(card.dataset.day || 0);
+                    const value = Number(card.dataset.nutritionValue || 0);
+                    if (daySet.has(day)) {
+                        unlockedValue += value;
+                    }
+                });
+
+                const progressPercent = totalNutritionValue
+                    ? Math.round((unlockedValue / totalNutritionValue) * 100)
+                    : 0;
+
+                unlockedEl.textContent = String(unlockedValue);
+                progressEl.textContent = `${progressPercent}%`;
+                countEl.textContent = String(daySet.size);
+                if (daySet.size === cards.length && cards.length > 0) {
+                    bannerEl.classList.add('show');
+                } else {
+                    bannerEl.classList.remove('show');
+                }
+            }
+
+            const completedDays = readCompletedDays();
+            applyVisibility(completedDays);
+            updateNutritionValues(completedDays, null);
+
+            completeButtons.forEach((button) => {
+                button.addEventListener('click', function () {
+                    const day = Number(this.dataset.completeDay || 0);
+                    if (!day) {
+                        return;
+                    }
+                    const nextPendingDay = getNextPendingDay(completedDays);
+                    if (day !== nextPendingDay) {
+                        showOrderPopup(nextPendingDay);
+                        return;
+                    }
+                    completedDays.add(day);
+                    saveCompletedDays(completedDays);
+                    applyVisibility(completedDays);
+                    updateNutritionValues(completedDays, day);
+                });
+            });
+        })();
+    </script>
+
+{% include '_translate_script.html' %}
+</body>
+</html>
+
+

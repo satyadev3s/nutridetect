@@ -68,8 +68,8 @@ def main():
     mal_class_indices = load_class_indices('malnutrition_labels.json')
 
     # Human threshold calibration
-    human_paths = list_images('dataset/test/0') + list_images('dataset/test/1')
-    human_labels = np.array([0] * len(list_images('dataset/test/0')) + [1] * len(list_images('dataset/test/1')), dtype=np.int32)
+    human_paths = list_images('human_dataset/test/0') + list_images('human_dataset/test/1')
+    human_labels = np.array([0] * len(list_images('human_dataset/test/0')) + [1] * len(list_images('human_dataset/test/1')), dtype=np.int32)
     human_probs = predict_batch(human_model, human_paths)
 
     h_bal_acc, h_acc, h_t, h_tp, h_tn, h_fp, h_fn = best_threshold(human_labels, human_probs)

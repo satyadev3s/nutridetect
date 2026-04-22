@@ -90,8 +90,8 @@ def main():
     mal_idx = mal_labels_map.get('malnutrition', 0)
 
     # Human evaluation with face fallback logic
-    human_0 = list_images('dataset/test/0')
-    human_1 = list_images('dataset/test/1')
+    human_0 = list_images('human_dataset/test/0')
+    human_1 = list_images('human_dataset/test/1')
     human_paths = human_0 + human_1
     y_true_h = np.array([0] * len(human_0) + [1] * len(human_1), dtype=np.int32)
 

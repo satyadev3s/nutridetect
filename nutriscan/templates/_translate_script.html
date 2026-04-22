@@ -1,0 +1,132 @@
+﻿<script>
+  function hideGoogleTranslatePopup() {
+    document.body.style.top = "0px";
+    document.documentElement.style.top = "0px";
+    document.body.style.marginTop = "0px";
+    document.documentElement.style.marginTop = "0px";
+
+    var selectors = [
+      ".goog-te-banner-frame.skiptranslate",
+      "iframe[id*='goog-te-banner-frame']",
+      "iframe.goog-te-banner-frame",
+      ".goog-te-menu-frame",
+      "#goog-gt-tt",
+      ".goog-te-balloon-frame",
+      ".VIpgJd-ZVi9od-ORHb-OEVmcd",
+      ".VIpgJd-ZVi9od-aZ2wEe-wOHMyf",
+      ".VIpgJd-yAWNEb-L7lbkb",
+      ".VIpgJd-yAWNEb-VIpgJd-fmcmS-sn54Q"
+    ];
+
+    selectors.forEach(function (selector) {
+      document.querySelectorAll(selector).forEach(function (el) {
+        el.style.display = "none";
+        el.style.visibility = "hidden";
+        el.style.maxHeight = "0";
+        if (el.tagName === "IFRAME" && el.id && el.id.indexOf("goog-te-banner-frame") !== -1) {
+          el.remove();
+        }
+      });
+    });
+  }
+
+  function getSelectedLanguageFromCookie() {
+    var match = document.cookie.match(/(?:^|; )googtrans=([^;]+)/);
+    if (!match) return "en";
+    var value = decodeURIComponent(match[1]);
+    var parts = value.split("/");
+    return parts[2] || "en";
+  }
+
+  function setSelectedLanguageCookie(lang) {
+    var value = "/en/" + lang;
+    var maxAge = 60 * 60 * 24 * 365;
+    document.cookie = "googtrans=" + value + ";path=/;max-age=" + maxAge;
+    if (window.location.hostname && window.location.hostname.indexOf(".") !== -1) {
+      document.cookie = "googtrans=" + value + ";path=/;domain=." + window.location.hostname + ";max-age=" + maxAge;
+    }
+  }
+
+  function triggerGoogleCombo(lang) {
+    var combo = document.querySelector(".goog-te-combo");
+    if (!combo) return false;
+    combo.value = lang;
+    combo.dispatchEvent(new Event("change"));
+    combo.dispatchEvent(new Event("input"));
+    setTimeout(hideGoogleTranslatePopup, 100);
+    setTimeout(hideGoogleTranslatePopup, 400);
+    return true;
+  }
+
+  function applyLanguage(lang, allowReloadFallback) {
+    setSelectedLanguageCookie(lang);
+    if (triggerGoogleCombo(lang)) return;
+
+    var observer = new MutationObserver(function () {
+      if (triggerGoogleCombo(lang)) {
+        observer.disconnect();
+      }
+    });
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+
+    setTimeout(function () {
+      observer.disconnect();
+      if (!triggerGoogleCombo(lang) && allowReloadFallback) {
+        window.location.reload();
+      }
+    }, 700);
+  }
+
+  function applySavedLanguageQuickly() {
+    var saved = getSelectedLanguageFromCookie();
+    var select = document.getElementById("languageSelect");
+    if (select) {
+      select.value = saved;
+    }
+    if (saved !== "en") {
+      setTimeout(function () {
+        applyLanguage(saved, false);
+      }, 80);
+    }
+  }
+
+  function googleTranslateElementInit() {
+    var container = document.getElementById("google_translate_element");
+    if (!container) {
+      container = document.createElement("div");
+      container.id = "google_translate_element";
+      container.style.display = "none";
+      document.body.appendChild(container);
+    }
+
+    new google.translate.TranslateElement({
+      pageLanguage: "en",
+      includedLanguages: "en,te,hi,ta,or",
+      autoDisplay: false
+    }, "google_translate_element");
+
+    applySavedLanguageQuickly();
+    hideGoogleTranslatePopup();
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    hideGoogleTranslatePopup();
+
+    var select = document.getElementById("languageSelect");
+    if (select) {
+      select.addEventListener("change", function () {
+        applyLanguage(this.value, true);
+      });
+    }
+
+    setTimeout(applySavedLanguageQuickly, 40);
+    setInterval(hideGoogleTranslatePopup, 1000);
+
+    var bannerObserver = new MutationObserver(function () {
+      hideGoogleTranslatePopup();
+    });
+    bannerObserver.observe(document.documentElement, { childList: true, subtree: true });
+  });
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+

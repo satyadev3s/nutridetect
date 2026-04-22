@@ -1,0 +1,28 @@
+{
+  "model_path": "C:\\Users\\durga\\Desktop\\dataset\\templates\\final_dti\\dataset\\malnutrition_model.h5",
+  "dataset_test_path": "C:\\Users\\durga\\Desktop\\dataset\\templates\\final_dti\\dataset\\malnutrition_dataset\\test",
+  "class_indices": {
+    "malnutrition": 0,
+    "normal": 1
+  },
+  "threshold": 0.5,
+  "samples": {
+    "total": 88,
+    "malnutrition": 60,
+    "normal": 28
+  },
+  "confusion_matrix": {
+    "tp": 53,
+    "tn": 27,
+    "fp": 1,
+    "fn": 7
+  },
+  "metrics": {
+    "accuracy": 0.9091,
+    "precision": 0.9815,
+    "recall": 0.8833,
+    "f1": 0.9298,
+    "specificity": 0.9643,
+    "balanced_accuracy": 0.9238
+  }
+}

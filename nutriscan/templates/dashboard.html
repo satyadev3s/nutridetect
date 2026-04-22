@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -90,6 +90,27 @@
             color: #808080;
         }
 
+        select.dashboard-input {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image:
+                linear-gradient(45deg, transparent 50%, var(--primary) 50%),
+                linear-gradient(135deg, var(--primary) 50%, transparent 50%);
+            background-position:
+                calc(100% - 22px) calc(50% - 3px),
+                calc(100% - 14px) calc(50% - 3px);
+            background-size: 8px 8px, 8px 8px;
+            background-repeat: no-repeat;
+            padding-right: 3rem;
+            cursor: pointer;
+        }
+
+        select.dashboard-input option {
+            background: #0f1c35;
+            color: #e0e0e0;
+        }
+
         .dashboard-input:disabled {
             opacity: 0.6;
             cursor: not-allowed;
@@ -171,11 +192,15 @@
             background: rgba(0, 212, 255, 0.05);
             border: 2px dashed var(--border-color);
             border-radius: 12px;
-            padding: 2rem;
+            padding: 1.2rem;
+            min-height: 240px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
             animation: slideInRight 0.6s ease-out 0.5s backwards;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .photo-upload-container:hover {
@@ -193,29 +218,18 @@
             border: 1px solid var(--border-color);
             border-radius: 20px;
             padding: 2.5rem;
-            animation: bounceIn 0.6s ease-out backwards;
-            transition: all 0.3s ease;
+            animation: bounceIn 0.5s ease-out backwards;
+            transition: all 0.25s ease;
             position: relative;
-            overflow: hidden;
+            overflow: visible;
         }
 
         .dashboard-card:nth-child(1) { animation-delay: 0.1s; }
         .dashboard-card:nth-child(2) { animation-delay: 0.2s; }
 
-        .dashboard-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent 30%, rgba(0, 212, 255, 0.1) 50%, transparent 70%);
-            animation: shine 3s infinite;
-        }
-
         .dashboard-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 50px rgba(0, 212, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 14px 32px rgba(0, 212, 255, 0.12);
         }
 
         .history-item {
@@ -226,7 +240,6 @@
             margin-bottom: 1rem;
             animation: slideInLeft 0.6s ease-out backwards;
             transition: all 0.3s ease;
-            cursor: pointer;
         }
 
         .history-item:nth-child(1) { animation-delay: 0.1s; }
@@ -234,7 +247,7 @@
         .history-item:nth-child(3) { animation-delay: 0.3s; }
 
         .history-item:hover {
-            transform: translateX(10px);
+            transform: translateY(-2px);
             border-color: var(--primary);
             box-shadow: 0 10px 30px rgba(0, 212, 255, 0.15);
         }
@@ -288,6 +301,19 @@
             box-shadow: 0 10px 24px rgba(239, 68, 68, 0.18);
         }
 
+        .history-button.plan {
+            background: rgba(34, 197, 94, 0.14);
+            color: #8af6ae;
+            border: 1px solid rgba(34, 197, 94, 0.45);
+        }
+
+        .history-button.plan:hover {
+            background: rgba(34, 197, 94, 0.22);
+            color: #d8ffe4;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(34, 197, 94, 0.2);
+        }
+
         .history-delete-form {
             margin: 0;
         }
@@ -304,6 +330,87 @@
             color: #a0a0a0;
             margin-bottom: 1.5rem;
             animation: fadeInUp 0.6s ease-out 0.1s backwards;
+        }
+
+        .page-shell {
+            width: 100%;
+            max-width: none;
+            margin: 0;
+            padding: 1.25rem 1.25rem 2rem;
+        }
+
+        .hero-banner {
+            background:
+                radial-gradient(circle at 88% 15%, rgba(0, 212, 255, 0.18), transparent 38%),
+                linear-gradient(140deg, rgba(16, 25, 41, 0.94), rgba(10, 18, 30, 0.96));
+            border: 1px solid rgba(125, 211, 252, 0.28);
+            border-radius: 22px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-title {
+            font-size: 2.1rem;
+            font-weight: 900;
+            margin-bottom: 0.7rem;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            color: #abc8d8;
+            font-size: 1rem;
+            line-height: 1.7;
+            max-width: 760px;
+        }
+
+        .section-block {
+            margin-top: 1.1rem;
+        }
+
+        .form-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+            gap: 2rem;
+        }
+
+        .upload-panel {
+            background: rgba(12, 20, 33, 0.62);
+            border: 1px solid rgba(125, 211, 252, 0.25);
+            border-radius: 16px;
+            padding: 0.95rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .photo-preview-image {
+            width: 100%;
+            max-height: 240px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+            background: rgba(8, 18, 30, 0.12);
+        }
+
+        .history-wrap {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 1.4rem;
+            color: #a0a0a0;
+        }
+
+        .logout-link {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.25s ease;
+        }
+
+        .logout-link:hover {
+            color: var(--secondary);
         }
 
         .scanning-overlay {
@@ -401,6 +508,19 @@
         }
 
         @media (max-width: 768px) {
+            .page-shell {
+                padding: 1.1rem 0.8rem 2rem;
+            }
+
+            .hero-title {
+                font-size: 1.6rem;
+            }
+
+            .form-layout {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
             .dashboard-card {
                 padding: 1.5rem;
             }
@@ -415,79 +535,93 @@
         }
     </style>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+{% include '_translate_head.html' %}
 </head>
-<body class="no-bg-image">
+<body>
     <nav class="navbar">
         <a href="{{ url_for('main.home') }}" class="navbar-brand">
             <i class="fas fa-leaf"></i> NutriDetect
         </a>
         <ul class="navbar-menu">
-            <li style="margin-left: auto;"><a href="{{ url_for('main.logout') }}" style="color: var(--primary); font-weight: 600; text-decoration: none; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.color='var(--secondary)'" onmouseout="this.style.color='var(--primary)'">Logout</a></li>
+            <li style="margin-left: auto;"><a href="{{ url_for('main.logout') }}" class="logout-link">Logout</a></li>
         </ul>
     </nav>
 
     <main style="margin-top: 80px;">
-        <section style="padding: 4rem 2rem; max-width: 1400px; margin: 0 auto;">
-            <div class="dashboard-card nutri-panel">
-                <h1 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 1rem;">
+        <div class="page-shell">
+        <section>
+            <div class="hero-banner nutri-panel">
+                <h1 class="hero-title">
                     Welcome, <span id="dashboardUsername" style="color: var(--primary);">{{ name }}</span>!
                 </h1>
-                <p style="color: #a0a0a0; font-size: 1.1rem; line-height: 1.8;">
+                <p class="hero-subtitle">
                     Ready to analyze your nutritional health? Update your profile and upload an image to get started with our advanced AI analysis.
                 </p>
             </div>
         </section>
 
-        <section style="padding: 4rem 2rem; max-width: 1400px; margin: 0 auto;" id="analyze">
+        <section class="section-block" id="analyze">
             <div class="dashboard-card nutri-panel">
                 <h2 class="dashboard-title">
                     <i class="fas fa-user-circle"></i> Your Profile Information
                 </h2>
                 <p class="dashboard-subtitle">Update your details for accurate health analysis</p>
 
-                <form id="profileForm" action="{{ url_for('main.predict') }}" method="POST" enctype="multipart/form-data" style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;">
+                <form id="profileForm" action="{{ url_for('main.predict') }}" method="POST" enctype="multipart/form-data" class="form-layout">
                     <div>
                         <div class="form-group-dashboard nutri-stagger">
                             <label class="form-label-dashboard">
                                 <i class="fas fa-user"></i> Full Name
                             </label>
-                            <input type="text" id="profileName" name="full_name" class="dashboard-input nutri-field" placeholder="Your full name" value="{{ name }}" required>
+                            <input type="text" id="profileName" name="full_name" class="dashboard-input nutri-field" required>
                         </div>
 
                         <div class="form-group-dashboard nutri-stagger">
                             <label class="form-label-dashboard">
                                 <i class="fas fa-birthday-cake"></i> Age (years)
                             </label>
-                            <input type="number" id="profileAge" name="age" class="dashboard-input nutri-field" placeholder="Enter your age" min="1" max="120">
+                            <input type="number" id="profileAge" name="age" class="dashboard-input nutri-field" min="1" max="120">
+                        </div>
+
+                        <div class="form-group-dashboard nutri-stagger">
+                            <label class="form-label-dashboard">
+                                <i class="fas fa-venus-mars"></i> Gender
+                            </label>
+                            <select id="profileGender" name="gender" class="dashboard-input nutri-field" required>
+                                <option value="">Select gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
                         </div>
 
                         <div class="form-group-dashboard nutri-stagger">
                             <label class="form-label-dashboard">
                                 <i class="fas fa-ruler-vertical"></i> Height (cm)
                             </label>
-                            <input type="number" id="profileHeight" name="height" class="dashboard-input nutri-field" placeholder="Enter your height in cm" min="50" max="250">
+                            <input type="number" id="profileHeight" name="height" class="dashboard-input nutri-field" min="50" max="250">
                         </div>
 
                         <div class="form-group-dashboard nutri-stagger">
                             <label class="form-label-dashboard">
                                 <i class="fas fa-weight"></i> Weight (kg)
                             </label>
-                            <input type="number" id="profileWeight" name="weight" class="dashboard-input nutri-field" placeholder="Enter your weight in kg" min="20" max="300" step="0.1">
+                            <input type="number" id="profileWeight" name="weight" class="dashboard-input nutri-field" min="5" max="200" step="0.1">
                         </div>
                     </div>
 
-                    <div>
+                    <div class="upload-panel">
                         <label class="form-label-dashboard">
                             <i class="fas fa-camera"></i> Upload Photo
                         </label>
                         <div id="photoUploadContainer" class="photo-upload-container nutri-stagger">
                             <input type="file" id="profilePhoto" name="file" accept="image/*" style="display: none;" required>
-                            <i class="fas fa-cloud-upload-alt" style="font-size: 2.5rem; color: var(--primary); display: block; margin-bottom: 1rem;"></i>
+                            <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: var(--primary); display: block; margin-bottom: 0.8rem;"></i>
                             <p style="color: #a0a0a0; margin-bottom: 0.5rem; font-weight: 600;">Click or drag to upload your photo</p>
                             <p style="color: #808080; font-size: 0.85rem;">PNG, JPG, GIF up to 5MB</p>
                         </div>
                         <div id="photoPreviewContainer" style="display: none;">
-                            <img id="photoPreview" style="width: 100%; max-height: 250px; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 1rem;">
+                            <img id="photoPreview" class="photo-preview-image">
                             <button type="button" onclick="clearPhoto()" class="clear-button-dashboard nutri-submit" style="width: 100%;">
                                 <i class="fas fa-times"></i> Remove Photo
                             </button>
@@ -502,12 +636,12 @@
             </div>
         </section>
 
-        <section style="padding: 4rem 2rem; max-width: 1400px; margin: 0 auto;" id="history">
+        <section class="section-block" id="history">
             <h2 class="dashboard-title">
                 <i class="fas fa-history"></i> Analysis History
             </h2>
             <p class="dashboard-subtitle">Your previous analyses and health insights</p>
-            <div id="historyContainer" class="nutri-panel" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem; color: #a0a0a0;">
+            <div id="historyContainer" class="history-wrap nutri-panel">
                 {% if history %}
                     {% for item in history %}
                     <div class="history-item nutri-stagger">
@@ -528,6 +662,11 @@
                                 <a href="{{ url_for('main.analysis_report', analysis_id=item.id) }}" class="history-button view nutri-submit">
                                     <i class="fas fa-file-alt"></i> View Report
                                 </a>
+                                {% if item.ai_status and item.ai_status|lower == 'malnourished' %}
+                                <a href="{{ url_for('main.nutriplan_30days', analysis_id=item.id) }}" class="history-button plan nutri-submit">
+                                    <i class="fas fa-bowl-food"></i> Nutrition Plan
+                                </a>
+                                {% endif %}
                                 <form method="POST" action="{{ url_for('main.delete_analysis', analysis_id=item.id) }}" class="history-delete-form" onsubmit="return confirm('Remove this history item?');">
                                     <button type="submit" class="history-button delete nutri-submit">
                                         <i class="fas fa-trash-alt"></i> Remove
@@ -542,6 +681,7 @@
                 {% endif %}
             </div>
         </section>
+        </div>
     </main>
 
     <div class="scanning-overlay" id="scanningOverlay">
@@ -570,5 +710,9 @@
     {% endfor %}
 {% endwith %}
     </script>
+
+{% include '_translate_script.html' %}
 </body>
 </html>
+
+

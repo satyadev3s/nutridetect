@@ -2,9 +2,11 @@ Flask
 Flask-Login
 Flask-Mail
 Flask-SQLAlchemy
+python-dotenv
 numpy<2
 opencv-python
 Pillow
 requests
 tensorflow==2.15.0
+keras==2.15.0
 gunicorn

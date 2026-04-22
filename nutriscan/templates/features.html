@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -524,6 +524,8 @@
     </style>
     <!-- Change from <link rel="stylesheet" href="style.css"> to: -->
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+{% include '_translate_head.html' %}
 </head>
 <body>
     <!-- Navbar with Box -->
@@ -629,19 +631,19 @@
                     </div>
                 </div>
                 <div class="feature-content">
-                    <h3>âš¡ Lightning Fast Analysis</h3>
+                    <h3>Lightning Fast Analysis</h3>
                     <p>Upload your photo and get comprehensive nutritional analysis in under 2 seconds. Our AI processes your data at incredible speed, so you don't have to wait for insights.</p>
                     <div>
                         <div class="feature-list-item">
-                            <div class="list-icon">âœ“</div>
+                            <div class="list-icon">&#10003;</div>
                             <div class="list-text">Real-time health assessment in seconds</div>
                         </div>
                         <div class="feature-list-item">
-                            <div class="list-icon">âœ“</div>
+                            <div class="list-icon">&#10003;</div>
                             <div class="list-text">Accurate nutritional markers detection</div>
                         </div>
                         <div class="feature-list-item">
-                            <div class="list-icon">âœ“</div>
+                            <div class="list-icon">&#10003;</div>
                             <div class="list-text">Immediate personalized recommendations</div>
                         </div>
                     </div>
@@ -658,19 +660,19 @@
                     </div>
                 </div>
                 <div class="feature-content">
-                    <h3>ðŸ“Š Track Your Progress</h3>
+                    <h3>Track Your Progress</h3>
                     <p>Keep detailed records of all your analyses. Compare results over time, track trends, and visualize how your nutritional health improves with our comprehensive analytics dashboard.</p>
                     <div>
                         <div class="feature-list-item">
-                            <div class="list-icon">âœ“</div>
+                            <div class="list-icon">&#10003;</div>
                             <div class="list-text">Historical data tracking and comparison</div>
                         </div>
                         <div class="feature-list-item">
-                            <div class="list-icon">âœ“</div>
+                            <div class="list-icon">&#10003;</div>
                             <div class="list-text">Visual trend analysis and charts</div>
                         </div>
                         <div class="feature-list-item">
-                            <div class="list-icon">âœ“</div>
+                            <div class="list-icon">&#10003;</div>
                             <div class="list-text">Predictive health insights and goals</div>
                         </div>
                     </div>
@@ -687,19 +689,19 @@
                     </div>
                 </div>
                 <div class="feature-content">
-                    <h3>ðŸ“‹ Comprehensive Reports</h3>
+                    <h3>Comprehensive Reports</h3>
                     <p>Receive detailed health reports with confidence scores, risk assessments, and actionable recommendations tailored specifically to your nutritional profile and goals.</p>
                     <div>
                         <div class="feature-list-item">
-                            <div class="list-icon">âœ“</div>
+                            <div class="list-icon">&#10003;</div>
                             <div class="list-text">Detailed nutritional analysis breakdown</div>
                         </div>
                         <div class="feature-list-item">
-                            <div class="list-icon">âœ“</div>
+                            <div class="list-icon">&#10003;</div>
                             <div class="list-text">Risk assessment and health warnings</div>
                         </div>
                         <div class="feature-list-item">
-                            <div class="list-icon">âœ“</div>
+                            <div class="list-icon">&#10003;</div>
                             <div class="list-text">Shareable reports for healthcare providers</div>
                         </div>
                     </div>
@@ -775,11 +777,13 @@
         </div>
 
         <div class="footer-bottom">
-            <p>&copy; 2026 NutriDetect AI. All rights reserved. | Made with <span style="color: var(--accent);">â¤</span> for healthcare.</p>
+            <p>&copy; 2026 NutriDetect AI. All rights reserved. | Made with <span style="color: var(--accent);">&hearts;</span> for healthcare.</p>
         </div>
     </footer>
 
    <script src="{{ url_for('static', filename='script.js') }}"></script>
 
+
+{% include '_translate_script.html' %}
 </body>
 </html>

@@ -21,6 +21,39 @@ document.addEventListener('DOMContentLoaded', () => {
             reader.readAsDataURL(file);
         });
     }
+
+    const logoutLinks = Array.from(document.querySelectorAll('a[href*="/logout"]'));
+    logoutLinks.forEach((link) => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault();
+            const logoutUrl = link.getAttribute('href') || '/logout';
+
+            if (typeof Swal === 'undefined') {
+                window.alert('Thanks for visiting our website.');
+                window.location.href = logoutUrl;
+                return;
+            }
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Thank You',
+                text: 'Thanks for visiting our website.',
+                customClass: {
+                    popup: 'nutri-alert-popup',
+                    title: 'nutri-alert-title',
+                    htmlContainer: 'nutri-alert-text',
+                    confirmButton: 'nutri-alert-confirm',
+                },
+                background: '#0f172a',
+                color: '#e8f7ff',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#00d4ff',
+                heightAuto: false,
+            }).then(() => {
+                window.location.href = logoutUrl;
+            });
+        });
+    });
 });
 
 function clearPhoto() {
