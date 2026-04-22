@@ -60,8 +60,8 @@ def get_tf():
     if not tf_import_attempted:
         tf_import_attempted = True
         try:
-            # Prefer TensorFlow's legacy Keras runtime for older .h5/.keras model compatibility.
-            os.environ.setdefault('TF_USE_LEGACY_KERAS', '1')
+            # Use TensorFlow's default bundled Keras on deployment (Render/TensorFlow 2.15).
+            # Forcing legacy Keras can break model loading when tf_keras is not available.
             import tensorflow as tensorflow_module
             tf = tensorflow_module
             tf_version = str(getattr(tensorflow_module, '__version__', 'unknown'))
